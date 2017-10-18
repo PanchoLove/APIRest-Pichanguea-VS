@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PichangueaUsachModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Auditoria">
+    <Key>
+      <PropertyRef Name="idAuditoria" />
+    </Key>
+    <Property Name="idAuditoria" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="audTipo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="audPagina" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="audEvento" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="audId" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="audTexto" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="audError" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="audIp" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="audUsuario" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="audCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Cancha">
+    <Key>
+      <PropertyRef Name="idCancha" />
+    </Key>
+    <Property Name="idCancha" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTipoCancha" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idComplejoDeportivo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="canNombre" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="canCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Complejo_Deportivo">
+    <Key>
+      <PropertyRef Name="idComplejoDeportivo" />
+    </Key>
+    <Property Name="idComplejoDeportivo" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cmdNombre" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="cmdDireccion" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="cmdFono" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="cmdCelular" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="cmdFax" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="cmdEmail" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="cmdGeoreferencia" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="cmdUrl" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="cmdCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Deporte">
+    <Key>
+      <PropertyRef Name="idDeporte" />
+    </Key>
+    <Property Name="idDeporte" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="depNombre" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="depFamilia" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="depCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Equipo">
+    <Key>
+      <PropertyRef Name="idEquipo" />
+    </Key>
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="equNombre" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="equEscudo" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="equDescripcion" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
+    <Property Name="equUrl" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="equEmail" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="equContacto" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="equContactoFono" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="equContactoCelular" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="equContactoEmail" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="equCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Equipo_Chat">
+    <Key>
+      <PropertyRef Name="idEquipoChat" />
+    </Key>
+    <Property Name="idEquipoChat" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="echMensaje" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="echaCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Equipo_Invitacion">
+    <Key>
+      <PropertyRef Name="idEquipoInvitacion" />
+    </Key>
+    <Property Name="idEquipoInvitacion" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="einEstado" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="einCreacion" Type="DateTime" Precision="3" />
+    <Property Name="einModificacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Equipo_Jugador">
+    <Key>
+      <PropertyRef Name="idEquipoJugador" />
+    </Key>
+    <Property Name="idEquipoJugador" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ejuRol" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ejuEstado" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ejuCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Equipo_Solicita_Ingreso">
+    <Key>
+      <PropertyRef Name="idEquipoSolicitaIngreso" />
+    </Key>
+    <Property Name="idEquipoSolicitaIngreso" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="esiCreacion" Type="DateTime" Precision="3" />
+    <Property Name="esiEstado" Type="Decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="Jugador">
+    <Key>
+      <PropertyRef Name="idJugador" />
+    </Key>
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jugUsername" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="jugPassword" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="jugRut" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="jugRutDv" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="jugNombre" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="jugPaterno" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="jugMaterno" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="jugFono" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="jugCelular" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="jugEmail" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="jugFoto" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+    <Property Name="jugCreacion" Type="DateTime" Precision="3" />
+    <Property Name="jugApodo" Type="String" MaxLength="125" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Partido">
+    <Key>
+      <PropertyRef Name="idPartido" />
+    </Key>
+    <Property Name="idPartido" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTipoPartido" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="parFecha" Type="DateTime" Precision="3" />
+    <Property Name="parHora" Type="Time" Precision="7" />
+    <Property Name="parRival" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="parComplejo" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="parCancha" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+    <Property Name="parUbicacion" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="parGeoReferencia" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="parEstado" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="parCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Partido_Chat">
+    <Key>
+      <PropertyRef Name="idPartidoChat" />
+    </Key>
+    <Property Name="idPartidoChat" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPartido" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pchMensaje" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="pchCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Partido_Incidente">
+    <Key>
+      <PropertyRef Name="idPartidoIncidente" />
+    </Key>
+    <Property Name="idPartidoIncidente" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idPartido" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pinTarjetaAmarilla" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pinTarjetaRoja" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pinGol" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pinCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Partido_Jugador">
+    <Key>
+      <PropertyRef Name="idPartidoJugador" />
+    </Key>
+    <Property Name="idPartidoJugador" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idJugador" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="idPartido" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pjuGalleta" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pjuEstado" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="pjuCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Tipo_Cancha">
+    <Key>
+      <PropertyRef Name="idTipoCancha" />
+    </Key>
+    <Property Name="idTipoCancha" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idDeporte" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="tcaNombre" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="tcaCreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Tipo_Partido">
+    <Key>
+      <PropertyRef Name="idTipoPartido" />
+    </Key>
+    <Property Name="idTipoPartido" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idDeporte" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="tpaNombre" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+    <Property Name="tpaMaximoJugadores" Type="Decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityContainer Name="PichangueaUsachEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Auditoria" EntityType="Self.Auditoria" />
+    <EntitySet Name="Cancha" EntityType="Self.Cancha" />
+    <EntitySet Name="Complejo_Deportivo" EntityType="Self.Complejo_Deportivo" />
+    <EntitySet Name="Deporte" EntityType="Self.Deporte" />
+    <EntitySet Name="Equipo" EntityType="Self.Equipo" />
+    <EntitySet Name="Equipo_Chat" EntityType="Self.Equipo_Chat" />
+    <EntitySet Name="Equipo_Invitacion" EntityType="Self.Equipo_Invitacion" />
+    <EntitySet Name="Equipo_Jugador" EntityType="Self.Equipo_Jugador" />
+    <EntitySet Name="Equipo_Solicita_Ingreso" EntityType="Self.Equipo_Solicita_Ingreso" />
+    <EntitySet Name="Jugador" EntityType="Self.Jugador" />
+    <EntitySet Name="Partido" EntityType="Self.Partido" />
+    <EntitySet Name="Partido_Chat" EntityType="Self.Partido_Chat" />
+    <EntitySet Name="Partido_Incidente" EntityType="Self.Partido_Incidente" />
+    <EntitySet Name="Partido_Jugador" EntityType="Self.Partido_Jugador" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Tipo_Cancha" EntityType="Self.Tipo_Cancha" />
+    <EntitySet Name="Tipo_Partido" EntityType="Self.Tipo_Partido" />
+  </EntityContainer>
+</Schema>
