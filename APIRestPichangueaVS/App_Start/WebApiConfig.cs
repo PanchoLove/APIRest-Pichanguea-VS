@@ -17,6 +17,7 @@ namespace APIRestPichangueaVS
 
             // Configuración y servicios de Web API
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+  
             //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             // Configure Web API para usar solo la autenticación de token de portador.
             config.SuppressDefaultHostAuthentication();

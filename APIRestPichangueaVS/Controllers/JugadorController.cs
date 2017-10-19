@@ -70,6 +70,70 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+        //Funcion que retorna un jugador en base a su nombre como entrada
+        public HttpResponseMessage Get(String nombre)
+        {
+            
+            try
+            {
+
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el jugador correspondiente a la ID
+                    var entity = entities.Jugador.FirstOrDefault(e => e.jugNombre == nombre);
+                    if (entity != null)
+                    {
+                        //Se retorna el estado OK y el jugador
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + nombre + " no existe");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        [Route("Equipos")]
+        public HttpResponseMessage GetEquipos(String idJugador)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "ooooooooooos") ;
+            /*
+            try
+            {
+                
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el jugador correspondiente a la ID
+                    var entity = entities.Jugador.FirstOrDefault(e => e.jugEmail = idJugador);
+                    if (entity != null)
+                    {
+                        //Se retorna el estado OK y el jugador
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + nombre + " no existe");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }*/
+        }
+
         //Funcion que agrega un jugador
         public HttpResponseMessage Post([FromBody]Jugador jugador)
         {
