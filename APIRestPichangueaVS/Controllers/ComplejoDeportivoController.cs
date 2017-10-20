@@ -72,7 +72,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-        //Funcion que retorna un complejo deportivo en base a su nombre como entrada
+        //Funcion que retorna una lista de complejos deportivos en base a su nombre como entrada
         public HttpResponseMessage Get(String nombre)
         {
 
@@ -83,7 +83,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el complejo deportivo correspondiente a la ID
-                    var entity = entities.Complejo_Deportivo.FirstOrDefault(e => e.cmdNombre == nombre);
+                    var entity = entities.Complejo_Deportivo.Where(e => e.cmdNombre == nombre).ToList();
                     if (entity != null)
                     {
                         //Se retorna el estado OK y el complejo deportivo
