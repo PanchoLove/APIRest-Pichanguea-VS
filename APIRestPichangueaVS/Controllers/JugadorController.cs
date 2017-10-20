@@ -71,7 +71,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-        //Funcion que retorna un jugador en base a su nombre como entrada
+        //Funcion que retorna una lista de jugador en base a su nombre como entrada
         public HttpResponseMessage Get(String nombre)
         {
             
@@ -81,11 +81,11 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el jugador correspondiente a la ID
-                    var entity = entities.Jugador.FirstOrDefault(e => e.jugNombre == nombre);
+                    //Se crea una variable con los jugadores correspondiente al nombre
+                    var entity = entities.Jugador.Where(e => e.jugNombre == nombre).ToList();
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y el jugador
+                        //Se retorna el estado OK y los jugadores
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
