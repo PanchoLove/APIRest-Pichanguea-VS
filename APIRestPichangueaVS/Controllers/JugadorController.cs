@@ -15,6 +15,10 @@ namespace APIRestPichangueaVS.Controllers
             var saludo = "hola gustavo";
         }
 
+        public void fun2()
+        {
+            var saludo = "hola gustavo";
+        }
         //Funcion que retorna la lista de jugadores
         public HttpResponseMessage Get()
         {
