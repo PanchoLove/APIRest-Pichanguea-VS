@@ -345,3 +345,7 @@ C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\A
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.csprojResolveAssemblyReference.cache
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.dll
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.pdb
+C:\Users\gustavo\Desktop\pichangea3\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.csprojResolveAssemblyReference.cache
+C:\Users\gustavo\Desktop\pichangea3\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.csproj.CoreCompileInputs.cache
+C:\Users\gustavo\Desktop\pichangea3\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.dll
+C:\Users\gustavo\Desktop\pichangea3\APIRest-Pichanguea-VS\APIRestPichangueaVS\obj\Debug\APIRestPichangueaVS.pdb
