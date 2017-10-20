@@ -10,6 +10,11 @@ namespace APIRestPichangueaVS.Controllers
 {
     public class JugadorController : ApiController
     {
+        public void fun()
+        {
+            var saludo = "hola gustavo";
+        }
+
         //Funcion que retorna la lista de jugadores
         public HttpResponseMessage Get()
         {
