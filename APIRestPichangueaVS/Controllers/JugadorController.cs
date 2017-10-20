@@ -91,7 +91,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + nombre + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con nombre: " + nombre + " no existe");
                     }
                 }
             }
@@ -228,7 +228,7 @@ namespace APIRestPichangueaVS.Controllers
                         //Se elimina de la BD el jugador
                         entities.Jugador.Remove(entity);
                         entities.SaveChanges();
-                        //Se retorna el estaado OK
+                        //Se retorna el estado OK
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 }
