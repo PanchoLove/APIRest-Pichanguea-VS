@@ -8,8 +8,11 @@ using PichangueaDataAccess;
 
 namespace APIRestPichangueaVS.Controllers
 {
+    [RoutePrefix("api/Jugador")]
     public class JugadorController : ApiController
     {
+        public String rutaInicial="api";
+
         //Funcion que retorna la lista de jugadores
         public HttpResponseMessage Get()
         {
@@ -91,7 +94,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con nombre: " + nombre + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + nombre + " no existe");
                     }
                 }
             }
@@ -102,28 +105,43 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        [Route("Equipos")]
-        public HttpResponseMessage GetEquipos(String idJugador)
+        //Se retorna una lista con los equipos afiliados a un jugador
+        [Route("{idJugador:int}/Equipos")]
+        public HttpResponseMessage GetEquipos(int idJugador)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, "ooooooooooos") ;
-            /*
             try
             {
                 
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el jugador correspondiente a la ID
-                    var entity = entities.Jugador.FirstOrDefault(e => e.jugEmail = idJugador);
-                    if (entity != null)
+                    //Se crea la lista de equipos pertenecientes al jugador
+                    var jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == idJugador);
+                    var intermedios = entities.Equipo_Jugador.Where(ej => ej.idJugador == jugador.idJugador).ToList();
+                    List<Equipo> equiposFiltrados = new List<Equipo>();                  
+
+                    foreach (Equipo_Jugador ej in intermedios ) {
+                        equiposFiltrados.Add(entities.Equipo.FirstOrDefault(e=> e.idEquipo==ej.idEquipo));
+                    }
+
+
+                    if (equiposFiltrados != null)
                     {
-                        //Se retorna el estado OK y el jugador
-                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                        if (equiposFiltrados.Count >= 0)
+                        {
+                            //Se retorna el estado OK y el jugador
+                            return Request.CreateResponse(HttpStatusCode.OK, equiposFiltrados);
+                        }
+                        else
+                        {
+                            //Se retorna el estado NotFound y un string que indica el error
+                            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe");
+                        }
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + nombre + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe");
                     }
                 }
             }
@@ -131,8 +149,74 @@ namespace APIRestPichangueaVS.Controllers
             {
                 //En caso de existir otro error, se envia estado de error y un mensaje
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }*/
+            }
         }
+
+
+        [Route("{idJugador:int}/Invitaciones")]
+        public HttpResponseMessage GetInvitaciones(int idJugador)
+        {
+
+
+            try
+            {
+
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    var invitaciones = entities.Equipo_Invitacion.ToList();
+
+
+                    if (invitaciones != null )
+                    {
+                        //Se retorna el estado OK y el jugador
+                        return Request.CreateResponse(HttpStatusCode.OK, invitaciones);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        [Route("{idJugador:int}/Invitaciones/{idInvitacion:int}")]
+        public HttpResponseMessage GetInvitaciones(int idJugador, int idInvitacion)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    var invitacion = entities.Equipo_Invitacion.FirstOrDefault(i=> i.idEquipoInvitacion==idInvitacion); ;
+
+
+                    if (invitacion != null)
+                    {
+                        //Se retorna el estado OK y el jugador
+                        return Request.CreateResponse(HttpStatusCode.OK, invitacion);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invitacion con ID: " + idInvitacion + " no existe");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
 
         //Funcion que agrega un jugador
         public HttpResponseMessage Post([FromBody]Jugador jugador)
@@ -207,6 +291,8 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+
         //Funcion que elimina un jugador
         public HttpResponseMessage Delete(int id)
         {
@@ -228,7 +314,7 @@ namespace APIRestPichangueaVS.Controllers
                         //Se elimina de la BD el jugador
                         entities.Jugador.Remove(entity);
                         entities.SaveChanges();
-                        //Se retorna el estado OK
+                        //Se retorna el estaado OK
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 }
