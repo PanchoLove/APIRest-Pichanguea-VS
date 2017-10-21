@@ -80,7 +80,6 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    cancha.idCancha = entities.Cancha.ToList().Count + 1;
 
                     //Se agrega el cancha a las entidades
                     entities.Cancha.Add(cancha);

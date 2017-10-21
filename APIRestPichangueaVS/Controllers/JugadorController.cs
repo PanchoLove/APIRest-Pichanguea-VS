@@ -533,7 +533,6 @@ namespace APIRestPichangueaVS.Controllers
                             }
 
                         }
-                        return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "Codigo de estado desconocido");
 
                     }
                 }

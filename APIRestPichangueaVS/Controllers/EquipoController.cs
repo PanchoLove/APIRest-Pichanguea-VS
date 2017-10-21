@@ -77,6 +77,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+        //Funcion que retorna una lista de equipos dado un nombre
         public HttpResponseMessage Get(String nombreEquipo)
         {
             try
@@ -85,7 +86,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una lista con todos los Equipos
-                    var entity = entities.Equipo.Where(e => e.equNombre == nombreEquipo);
+                    var entity = entities.Equipo.Where(e => e.equNombre == nombreEquipo).ToList();
 
                     if (entity != null)
                     {
@@ -110,7 +111,7 @@ namespace APIRestPichangueaVS.Controllers
 
 
 
-        //Funcion que agrega un jugador
+        //Funcion que agrega un equipo
         public HttpResponseMessage Post([FromBody]Equipo equipo)
         {
             try
@@ -118,7 +119,6 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    equipo.idEquipo = entities.Equipo.ToList().Count;
                     //Se agrega el jugador a las entidades
                     entities.Equipo.Add(equipo);
                     entities.SaveChanges();
@@ -153,9 +153,9 @@ namespace APIRestPichangueaVS.Controllers
                     entities.Equipo_Invitacion.Add(nuevaInvitacion);
                     entities.SaveChanges();
 
-                    //Se crea un un mensaje con el codigo Created y con el jugador ingresado
+                    //Se crea un un mensaje con el codigo Created y con la invitacion ingresado
                     var message = Request.CreateResponse(HttpStatusCode.Created, nuevaInvitacion);
-                    //Se concatena la ID al jugador del mensaje
+                    //Se concatena la ID a la invitacion del mensaje
                     message.Headers.Location = new Uri(Request.RequestUri + nuevaInvitacion.idEquipoInvitacion.ToString());
                     return message;
                 }
