@@ -266,7 +266,6 @@ namespace APIRestPichangueaVS.Controllers
 
                     var invitaciones = entities.Equipo_Invitacion.ToList();
 
-
                     if (invitaciones != null)
                     {
                         //Se retorna el estado OK y el jugador
