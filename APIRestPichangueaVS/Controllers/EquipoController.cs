@@ -8,7 +8,7 @@ using PichangueaDataAccess;
 
 namespace APIRestPichangueaVS.Controllers
 {
-    [RoutePrefix("api/Jugador")]
+    [RoutePrefix("api/Equipo")]
     public class EquipoController : ApiController
     {
 

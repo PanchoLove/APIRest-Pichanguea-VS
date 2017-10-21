@@ -44,8 +44,8 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         // GET: api/Partido/5
-        //Funcion que retorna un partido en base a su idPartido
-        public HttpResponseMessage Get(int idPartido)
+        //Funcion que retorna un partido en base a su id
+        public HttpResponseMessage Get(int id)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el partido correspondiente a la ID
-                    var partido = entities.Partido.FirstOrDefault(p => p.idPartido == idPartido);
+                    var partido = entities.Partido.FirstOrDefault(p => p.idPartido == id);
                     if (partido != null)
                     {
                         //Se retorna el estado OK y el partido
@@ -62,7 +62,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + idPartido.ToString() + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + id.ToString() + " no existe");
                     }
                 }
             }
@@ -82,6 +82,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se agrega el partido a las entidades
+                    partido.idPartido = entities.Partido.ToList().Count + 1;
                     entities.Partido.Add(partido);
                     entities.SaveChanges();
                     //Se crea un un mensaje con el codigo Created y con el partido ingresado
@@ -100,7 +101,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         //Funcion que modifica un partido
-        public HttpResponseMessage Put(int idPartido, [FromBody]Partido partido)
+        public HttpResponseMessage Put(int id, [FromBody]Partido partido)
         {
             try
             {
@@ -108,11 +109,11 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el partido correspondiente a la ID
-                    var partidoEntity = entities.Partido.FirstOrDefault(p => p.idPartido == idPartido);
+                    var partidoEntity = entities.Partido.FirstOrDefault(p => p.idPartido == id);
                     if (partidoEntity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + idPartido.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
@@ -144,7 +145,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         // DELETE: api/Partido/5
-        public HttpResponseMessage Delete(int idPartido)
+        public HttpResponseMessage Delete(int id)
         {
 
             try
@@ -153,11 +154,11 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el jugador correspondiente a la ID
-                    var partidoEntity = entities.Partido.FirstOrDefault(p => p.idPartido == idPartido);
+                    var partidoEntity = entities.Partido.FirstOrDefault(p => p.idPartido == id);
                     if (partidoEntity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + idPartido.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else

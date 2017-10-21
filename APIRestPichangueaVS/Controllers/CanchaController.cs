@@ -43,8 +43,8 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         // GET: api/Partido/5
-        //Funcion que retorna un cancha en base a su idCancha
-        public HttpResponseMessage Get(int idPartido)
+        //Funcion que retorna un cancha en base a su id
+        public HttpResponseMessage Get(int id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el cancha correspondiente a la ID
-                    var partido = entities.Partido.FirstOrDefault(p => p.idPartido == idPartido);
+                    var partido = entities.Partido.FirstOrDefault(p => p.idPartido == id);
                     if (partido != null)
                     {
                         //Se retorna el estado OK y el cancha
@@ -61,7 +61,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + idPartido.ToString() + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + id.ToString() + " no existe");
                     }
                 }
             }
@@ -80,6 +80,8 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
+                    cancha.idCancha = entities.Cancha.ToList().Count + 1;
+
                     //Se agrega el cancha a las entidades
                     entities.Cancha.Add(cancha);
                     entities.SaveChanges();
@@ -137,7 +139,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         // DELETE: api/Partido/5
-        public HttpResponseMessage Delete(int idCancha)
+        public HttpResponseMessage Delete(int id)
         {
 
             try
@@ -146,11 +148,11 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con la cancha correspondiente a la ID
-                    var cancha = entities.Cancha.FirstOrDefault(c => c.idCancha == idCancha);
+                    var cancha = entities.Cancha.FirstOrDefault(c => c.idCancha == id);
                     if (cancha == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cancha con ID: " + idCancha.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
