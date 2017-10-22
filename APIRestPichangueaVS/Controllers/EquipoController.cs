@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using PichangueaDataAccess;
+using APIRestPichangueaVS.AdditionaModels;
 
 namespace APIRestPichangueaVS.Controllers
 {
@@ -245,6 +246,102 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+
+        [Route("{idEquipo:int}/Chat")]
+        public HttpResponseMessage GetChat(int idEquipo)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //se obtienen todos los registros de chat para el idPartido
+                    var chat = entities.Equipo_Chat.Where(ech => ech.idEquipo == idEquipo).ToList();
+
+                    if (chat != null)
+                    {
+
+                        //se entregan los mensajes del chat en un formato mas manejable por la parte del front-end
+                        List<Mensaje> mensajes = new List<Mensaje>();
+
+                        foreach (Equipo_Chat e in chat)
+                        {
+
+                            Jugador jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == e.idJugador);
+                            JugadorSimple autor = new JugadorSimple(jugador.idJugador,
+                                                                     jugador.jugUsername,
+                                                                     jugador.jugFoto,
+                                                                     jugador.jugApodo);
+                            
+                            Mensaje mensaje = new Mensaje(autor, e.echMensaje, e.echaCreacion);
+                            mensajes.Add(mensaje);
+                        }
+
+                        return Request.CreateResponse(HttpStatusCode.OK, mensajes);
+                    }
+                    else
+                    {
+
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        [Route("{idEquipo:int}/Chat")]
+        public HttpResponseMessage PostChat([FromBody]MensajeEntrada mensaje, int idEquipo)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    if (mensaje.idJugador==null || mensaje.idJugador==null) {
+                        return Request.CreateErrorResponse(HttpStatusCode.PartialContent,"Faltan campos por rellenar");
+                    }
+
+                    var comprobacion = entities.Equipo_Jugador.FirstOrDefault(ej => ej.idJugador == mensaje.idJugador &&
+                                                                                    ej.idEquipo == idEquipo);
+
+
+                    if (comprobacion == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "El jugador no pertenece al equipo especificado");
+                    }
+
+
+                    Equipo_Chat ech = new Equipo_Chat();
+                    ech.idJugador = mensaje.idJugador;
+                    ech.idEquipo= idEquipo;
+                    ech.echaCreacion = DateTime.Now;
+                    ech.echMensaje = mensaje.contenido;
+
+
+                    entities.Equipo_Chat.Add(ech);
+                    entities.SaveChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "Mensaje creado");
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+
+
+
 
     }
 }

@@ -365,7 +365,6 @@ namespace APIRestPichangueaVS.Controllers
   
 
                         partidosRespuesta.Add(new PartidoInformacionExtra(pc, pj.pjuEstado, pj.pjuGalleta));
-                        
 
                     }
 
@@ -813,6 +812,236 @@ namespace APIRestPichangueaVS.Controllers
                 //En caso de existir otro error, se envia estado de error y un mensaje
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
+        }
+
+        [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]
+        public HttpResponseMessage GetChat(int idPartido, int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //comprobar si el partido esta vinculado al jugador
+                    var comprobacion = entities.Partido_Jugador.FirstOrDefault(pj => pj.idJugador==idJugador &&
+                                                                                     pj.idPartido==idPartido );
+
+
+                    if (comprobacion==null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "El jugador no se encuentra en el partido especificado");
+                    }
+
+                    //se obtienen todos los registros de chat para el idPartido
+                    var chat = entities.Partido_Chat.Where(pch => pch.idPartido == idPartido).ToList();
+
+                    if (chat != null)
+                    {
+
+                        //se entregan los mensajes del chat en un formato mas manejable por la parte del front-end
+                        List<Mensaje> mensajes = new List<Mensaje>();
+
+                        foreach (Partido_Chat c in chat)
+                        {
+
+                            Jugador jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == c.idJugador);
+                            JugadorSimple autor = new JugadorSimple(jugador.idJugador,
+                                                                     jugador.jugUsername,
+                                                                     jugador.jugFoto,
+                                                                     jugador.jugApodo);
+
+                            Mensaje mensaje = new Mensaje(autor, c.pchMensaje, c.pchCreacion);
+                            mensajes.Add(mensaje);
+                        }
+
+                        return Request.CreateResponse(HttpStatusCode.OK, mensajes);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+       [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]
+        public HttpResponseMessage PostChat([FromBody]mensajeSimple mensaje, int idPartido, int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    var comprobacion = entities.Partido_Jugador.FirstOrDefault(pj => pj.idJugador == idJugador &&
+                                                                                     pj.idPartido == idPartido);
+
+
+                    if (comprobacion == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "El jugador no se encuentra en el partido especificado");
+                    }
+
+                    Partido_Chat pch = new Partido_Chat();
+                    pch.idJugador = idJugador;
+                    pch.idPartido = idPartido;
+                    pch.pchCreacion = DateTime.Now;
+                    pch.pchMensaje = mensaje.contenido;
+
+
+                    entities.Partido_Chat.Add(pch);
+                    entities.SaveChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "Mensaje creado");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+
+        /* version simplificada del metodo (no funciona xD)
+
+        [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]
+        public HttpResponseMessage PostChat([FromBody]String mensaje, int idPartido, int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    Partido_Chat pch = new Partido_Chat();
+                    pch.idJugador = idJugador;
+                    pch.idPartido = idPartido;
+                    pch.pchCreacion = DateTime.Now;
+                    pch.pchMensaje = mensaje;
+
+
+                    entities.Partido_Chat.Add(pch);
+                    entities.SaveChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "Mensaje creado");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }*/
+
+        [Route("{idJugador:int}/Equipos/{idEquipo:int}/Chat/")]
+        public HttpResponseMessage GetEquipoChat(int idEquipo, int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    var comprobacion = entities.Equipo_Jugador.FirstOrDefault(ej => ej.idJugador == idJugador &&
+                                                                                    ej.idEquipo == idEquipo);
+
+
+                    if (comprobacion == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "El jugador no pertenece al equipo especificado");
+                    }
+
+                    //se obtienen todos los registros de chat para el idPartido
+                    var chat = entities.Equipo_Chat.Where(ech => ech.idEquipo == idEquipo).ToList();
+
+                    if (chat != null)
+                    {
+
+                        //se entregan los mensajes del chat en un formato mas manejable por la parte del front-end
+                        List<Mensaje> mensajes = new List<Mensaje>();
+
+                        foreach (Equipo_Chat e in chat)
+                        {
+
+                            Jugador jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == e.idJugador);
+                            JugadorSimple autor = new JugadorSimple(jugador.idJugador,
+                                                                     jugador.jugUsername,
+                                                                     jugador.jugFoto,
+                                                                     jugador.jugApodo);
+
+                            Mensaje mensaje = new Mensaje(autor, e.echMensaje, e.echaCreacion);
+                            mensajes.Add(mensaje);
+                        }
+
+                        return Request.CreateResponse(HttpStatusCode.OK, mensajes);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+        [Route("{idJugador:int}/Equipos/{idEquipo:int}/Chat/")]
+        public HttpResponseMessage PostEquipoChat([FromBody]mensajeSimple mensaje, int idEquipo, int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    var comprobacion = entities.Equipo_Jugador.FirstOrDefault(ej => ej.idJugador == idJugador &&
+                                                                                    ej.idEquipo == idEquipo);
+
+
+                    if (comprobacion == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "El jugador no pertenece al equipo especificado");
+                    }
+
+                    Equipo_Chat ech = new Equipo_Chat();
+                    ech.idJugador = idJugador;
+                    ech.idEquipo = idEquipo;
+                    ech.echaCreacion = DateTime.Now;
+                    ech.echMensaje = mensaje.contenido;
+
+
+                    entities.Equipo_Chat.Add(ech);
+                    entities.SaveChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "Mensaje creado");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
 

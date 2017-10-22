@@ -200,6 +200,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionaModels\JugadorSimple.cs" />
+    <Compile Include="AdditionaModels\Mensaje.cs" />
+    <Compile Include="AdditionaModels\MensajeEntrada.cs" />
+    <Compile Include="AdditionaModels\mensajeSimple.cs" />
     <Compile Include="AdditionaModels\PartidoCompuesto.cs" />
     <Compile Include="AdditionaModels\PartidoInformacionExtra.cs" />
     <Compile Include="AdditionaModels\Sesion.cs" />
