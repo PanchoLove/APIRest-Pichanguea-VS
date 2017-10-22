@@ -6,10 +6,12 @@ API Rest pichanguea creado con C#
 Ejecutar desde visual studio, se abrira una pagina como "localhost:55242", en este ejemplo la ruta de todas las funcionalidades seria: "localhost:55242/api", ademas en "localhost:55242/help" se encuentra una lista con el detalle de todos los metodos del servicio (Generado automaticamente).
 
 ## Lista de URLs y sus metodos
-Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se mencionan aquellos que pueden considerarse como relevantes para las historias de usuario:
+Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se mencionan aquellos que pueden considerarse como relevantes para las historias de usuario
 
- -Crear Usuario (Jugador)
- -Inicio de sesion
+resumen:
+
+ -crear Usuario (Jugador)
+ -inicio de sesion
  -ver informacion de un partido
  -ver informacion de un equipo
  -ver informacion de un jugador
@@ -17,12 +19,12 @@ Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se m
  -obtener los equipos de un jugador
  -modificar asistencia de un jugador
  -modificar asistencia de un jugador incluyendo galletas
- -Agregar galletas
- -Modificar cantidad de galletas
- -Obtener los mensajes del chat de un partido
- -Enviar un mensaje a un caht de partido
- -Obtener los mensajes del chat de un equipo
- -Enviar un mensaje a un caht de equipo
+ -agregar galletas
+ -modificar cantidad de galletas
+ -obtener los mensajes del chat de un partido
+ -enviar un mensaje a un caht de partido
+ -obtener los mensajes del chat de un equipo
+ -enviar un mensaje a un caht de equipo
 
 
 ### Crear Usuario (Jugador)
@@ -30,7 +32,7 @@ Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se m
 @POST: ```api/Jugador```
 
 body: 
-	```
+```
 	{
 	  "jugUsername": "sample string 2",
 	  "jugPassword": "sample string 3",
