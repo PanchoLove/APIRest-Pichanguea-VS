@@ -64,6 +64,7 @@ Se retorna un json con el jugador + un token de prueba (version simplificada res
 @GET : ```api/Partido/{id}```
 
 ejemplo1: api/Partido?id=1
+
 ejemplo2: api/Partido/1
 
 (Si no se incluye el id retorna una lista con todos los partidos, de aqui en mas aplica lo mismo para todas las Urls como por ejemplo equipo, usuario, etc)
