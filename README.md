@@ -37,16 +37,16 @@ body:
 	  "jugUsername": "sample string 2",
 	  "jugPassword": "sample string 3",
  	  "jugRut": 1.0,
-    "jugRutDv": "sample string 4",
-    "jugNombre": "sample string 5",
-    "jugPaterno": "sample string 6",
+          "jugRutDv": "sample string 4",
+          "jugNombre": "sample string 5",
+          "jugPaterno": "sample string 6",
 	  "jugMaterno": "sample string 7",
 	  "jugFono": "sample string 8",
 	  "jugCelular": "sample string 9",
-    "jugEmail": "sample string 10",
+          "jugEmail": "sample string 10",
 	  "jugFoto": "sample string 11",
-    "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
-    "jugApodo": "sample string 12"
+          "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
+          "jugApodo": "sample string 12"
 	 }
 ```
 
@@ -127,7 +127,7 @@ Body:
 	``` 
 	{
 	   "idPartido": 1.0,
-  	 "idJugador": 1.0,
+  	   "idJugador": 1.0,
 	   "contenido": "sample string 1"
 	} 
 	```
@@ -138,7 +138,7 @@ Body:
 Body: 
 	``` 
 	{
-	 "contenido": "sample string 1"
+	  "contenido": "sample string 1"
 	}  
  	```
 
