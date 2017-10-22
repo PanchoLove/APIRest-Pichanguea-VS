@@ -201,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionaModels\PartidoCompuesto.cs" />
+    <Compile Include="AdditionaModels\PartidoInformacionExtra.cs" />
+    <Compile Include="AdditionaModels\Sesion.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\PartidoController.cs" />
+    <Compile Include="Controllers\SesionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

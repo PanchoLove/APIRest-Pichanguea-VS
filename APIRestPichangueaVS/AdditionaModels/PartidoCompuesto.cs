@@ -20,10 +20,6 @@ namespace APIRestPichangueaVS.AdditionaModels
 
         public decimal idPartido { get; set; }
 
-        public Nullable<decimal> galletas { get; set; }
-
-        public Nullable<decimal> asistencia { get; set; }
-
         public Nullable<System.DateTime> parFecha { get; set; }
         public Nullable<System.TimeSpan> parHora { get; set; }
         public string parRival { get; set; }
