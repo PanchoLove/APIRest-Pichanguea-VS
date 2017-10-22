@@ -10,21 +10,21 @@ Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se m
 
 resumen:
 
- -crear Usuario (Jugador)
- -inicio de sesion
- -ver informacion de un partido
- -ver informacion de un equipo
- -ver informacion de un jugador
- -obtener los partidos de un jugador
- -obtener los equipos de un jugador
- -modificar asistencia de un jugador
- -modificar asistencia de un jugador incluyendo galletas
- -agregar galletas
- -modificar cantidad de galletas
- -obtener los mensajes del chat de un partido
- -enviar un mensaje a un caht de partido
- -obtener los mensajes del chat de un equipo
- -enviar un mensaje a un caht de equipo
+    -crear Usuario (Jugador)
+    -inicio de sesion
+    -ver informacion de un partido
+    -ver informacion de un equipo
+    -ver informacion de un jugador
+    -obtener los partidos de un jugador
+    -obtener los equipos de un jugador
+    -modificar asistencia de un jugador
+    -modificar asistencia de un jugador incluyendo galletas
+    -agregar galletas
+    -modificar cantidad de galletas
+    -obtener los mensajes del chat de un partido
+    -enviar un mensaje a un caht de partido
+    -obtener los mensajes del chat de un equipo
+    -enviar un mensaje a un caht de equipo
 
 
 ### Crear Usuario (Jugador)
@@ -37,18 +37,20 @@ body:
 	  "jugUsername": "sample string 2",
 	  "jugPassword": "sample string 3",
  	  "jugRut": 1.0,
-          "jugRutDv": "sample string 4",
-          "jugNombre": "sample string 5",
-          "jugPaterno": "sample string 6",
+    "jugRutDv": "sample string 4",
+    "jugNombre": "sample string 5",
+    "jugPaterno": "sample string 6",
 	  "jugMaterno": "sample string 7",
 	  "jugFono": "sample string 8",
 	  "jugCelular": "sample string 9",
-          "jugEmail": "sample string 10",
+    "jugEmail": "sample string 10",
 	  "jugFoto": "sample string 11",
-          "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
-          "jugApodo": "sample string 12"
+    "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
+    "jugApodo": "sample string 12"
 	 }
-	 ```
+```
+
+
 (El servicio permite que se omitan parametros)
 
 ### Inicio de sesion
@@ -124,9 +126,9 @@ Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia e
 Body: 
 	``` 
 	{
-	 "idPartido": 1.0,
-	 "idJugador": 1.0,
-	 "contenido": "sample string 1"
+	   "idPartido": 1.0,
+  	 "idJugador": 1.0,
+	   "contenido": "sample string 1"
 	} 
 	```
 
@@ -153,21 +155,21 @@ idem
 @GET ``` api/Equipo/{idPartido}/Chat ```
 
 Body:
-	```
-	{
-	 "idPartido": 1.0,
-	 "idJugador": 1.0,
-	 "contenido": "sample string 1"
-	}  
+  	```
+  	{
+  	 "idPartido": 1.0,
+  	 "idJugador": 1.0,
+  	 "contenido": "sample string 1"
+  	}  
 	  ```
 
 
 @GET ``` api/Jugador/{idJugador}/Equipos/{idPartido}/Chat ```
 
 Body: 
-	```
-	{
-	 "contenido": "sample string 1"
-	}  
-	```
+    ```
+ 	  {
+ 	   "contenido": "sample string 1"
+ 	  }  
+	  ```
 
