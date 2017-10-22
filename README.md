@@ -126,9 +126,9 @@ Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia e
 Body: 
 	``` 
 	{
-	   "idPartido": 1.0,
-  	   "idJugador": 1.0,
-	   "contenido": "sample string 1"
+	  "idPartido": 1.0,
+	  "idJugador": 1.0,
+	  "contenido": "sample string 1"
 	} 
 	```
 
@@ -156,20 +156,20 @@ idem
 
 Body:
   	```
-  	{
-  	 "idPartido": 1.0,
-  	 "idJugador": 1.0,
-  	 "contenido": "sample string 1"
-  	}  
-	  ```
+	{
+	  "idPartido": 1.0,
+	  "idJugador": 1.0,
+	  "contenido": "sample string 1"
+	}  
+	```
 
 
 @GET ``` api/Jugador/{idJugador}/Equipos/{idPartido}/Chat ```
 
 Body: 
-    ```
- 	  {
- 	   "contenido": "sample string 1"
- 	  }  
-	  ```
+	```
+	{
+	  "contenido": "sample string 1"
+	}  
+	```
 
