@@ -2,50 +2,54 @@
 API Rest pichanguea creado con C#
 
 
-##Instrucciones
+## Instrucciones
 Ejecutar desde visual studio, se abrira una pagina como "localhost:55242", en este ejemplo la ruta de todas las funcionalidades seria: "localhost:55242/api", ademas en "localhost:55242/help" se encuentra una lista con el detalle de todos los metodos del servicio (Generado automaticamente).
 
-##Lista de URLs y sus metodos
+## Lista de URLs y sus metodos
 Como se menciono el detalle de los metodos se encuentra en /help, aqui solo se mencionan aquellos que pueden considerarse como relevantes para las historias de usuario:
 
--Crear Usuario (Jugador)
--Inicio de sesion
--ver informacion de un partido
--ver informacion de un equipo
--ver informacion de un jugador
--obtener los partidos de un jugador
--obtener los equipos de un jugador
--modificar asistencia de un jugador
--modificar asistencia de un jugador incluyendo galletas
--Agregar galletas
--Modificar cantidad de galletas
--Obtener los mensajes del chat de un partido
--Enviar un mensaje a un caht de partido
--Obtener los mensajes del chat de un equipo
--Enviar un mensaje a un caht de equipo
+ -Crear Usuario (Jugador)
+ -Inicio de sesion
+ -ver informacion de un partido
+ -ver informacion de un equipo
+ -ver informacion de un jugador
+ -obtener los partidos de un jugador
+ -obtener los equipos de un jugador
+ -modificar asistencia de un jugador
+ -modificar asistencia de un jugador incluyendo galletas
+ -Agregar galletas
+ -Modificar cantidad de galletas
+ -Obtener los mensajes del chat de un partido
+ -Enviar un mensaje a un caht de partido
+ -Obtener los mensajes del chat de un equipo
+ -Enviar un mensaje a un caht de equipo
 
 
-###Crear Usuario (Jugador)
+### Crear Usuario (Jugador)
 
 @POST: ```api/Jugador```
 
-body: ```{
-		  "jugUsername": "sample string 2",
-		  "jugPassword": "sample string 3",
-		  "jugRut": 1.0,
-		  "jugRutDv": "sample string 4",
-		  "jugNombre": "sample string 5",
-		  "jugPaterno": "sample string 6",
-		  "jugMaterno": "sample string 7",
-		  "jugFono": "sample string 8",
-		  "jugCelular": "sample string 9",
-		  "jugEmail": "sample string 10",
-		  "jugFoto": "sample string 11",
-		  "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
-		  "jugApodo": "sample string 12"
-	 ```}
+body: 
+	```
+	{
+	  "jugUsername": "sample string 2",
+	  "jugPassword": "sample string 3",
+ 	  "jugRut": 1.0,
+          "jugRutDv": "sample string 4",
+          "jugNombre": "sample string 5",
+          "jugPaterno": "sample string 6",
+	  "jugMaterno": "sample string 7",
+	  "jugFono": "sample string 8",
+	  "jugCelular": "sample string 9",
+          "jugEmail": "sample string 10",
+	  "jugFoto": "sample string 11",
+          "jugCreacion": "2017-10-22T06:50:20.7831785-03:00",
+          "jugApodo": "sample string 12"
+	 }
+	 ```
+(El servicio permite que se omitan parametros)
 
-###Inicio de sesion
+### Inicio de sesion
 
 @GET : ```api/Sesion?usuario={usuario}&pass={pass}```
 
@@ -115,18 +119,24 @@ Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia e
 
 @GET ``` api/Partido/{idPartido}/Chat ```
 
-Body: ``` {
-			  "idPartido": 1.0,
-			  "idJugador": 1.0,
-			  "contenido": "sample string 1"
-		  }  ```
+Body: 
+	``` 
+	{
+	 "idPartido": 1.0,
+	 "idJugador": 1.0,
+	 "contenido": "sample string 1"
+	} 
+	```
 
 
 @GET ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Chat ```
 
-Body: ``` {
-			  "contenido": "sample string 1"
-		  }  ```
+Body: 
+	``` 
+	{
+	 "contenido": "sample string 1"
+	}  
+ 	```
 
 ### Obtener los mensajes del chat de un equipo
 Analogo a obtener los mensajes de un partido: 
@@ -140,16 +150,22 @@ idem
 
 @GET ``` api/Equipo/{idPartido}/Chat ```
 
-Body: ``` {
-			  "idPartido": 1.0,
-			  "idJugador": 1.0,
-			  "contenido": "sample string 1"
-		  }  ```
+Body:
+	```
+	{
+	 "idPartido": 1.0,
+	 "idJugador": 1.0,
+	 "contenido": "sample string 1"
+	}  
+	  ```
 
 
 @GET ``` api/Jugador/{idJugador}/Equipos/{idPartido}/Chat ```
 
-Body: ``` {
-			  "contenido": "sample string 1"
-		  }  ```
+Body: 
+	```
+	{
+	 "contenido": "sample string 1"
+	}  
+	```
 
