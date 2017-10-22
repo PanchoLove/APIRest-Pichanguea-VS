@@ -124,23 +124,23 @@ Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia e
 @GET ``` api/Partido/{idPartido}/Chat ```
 
 Body: 
-	``` 
+``` 
 	{
 	  "idPartido": 1.0,
 	  "idJugador": 1.0,
 	  "contenido": "sample string 1"
 	} 
-	```
+```
 
 
 @GET ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Chat ```
 
 Body: 
-	``` 
+``` 
 	{
 	  "contenido": "sample string 1"
 	}  
- 	```
+```
 
 ### Obtener los mensajes del chat de un equipo
 Analogo a obtener los mensajes de un partido: 
@@ -155,21 +155,21 @@ idem
 @GET ``` api/Equipo/{idPartido}/Chat ```
 
 Body:
-  	```
+```
 	{
 	  "idPartido": 1.0,
 	  "idJugador": 1.0,
 	  "contenido": "sample string 1"
 	}  
-	```
+```
 
 
 @GET ``` api/Jugador/{idJugador}/Equipos/{idPartido}/Chat ```
 
 Body: 
-	```
+```
 	{
 	  "contenido": "sample string 1"
 	}  
-	```
+```
 
