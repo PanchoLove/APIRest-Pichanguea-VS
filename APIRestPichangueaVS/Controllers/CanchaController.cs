@@ -6,10 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using PichangueaDataAccess;
 
-
 namespace APIRestPichangueaVS.Controllers
 {
-    [RoutePrefix("api/Cancha")]
     public class CanchaController : ApiController
     {
         //Funcion que retorna todas las canchas
@@ -52,11 +50,11 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con la cancha correspondiente a la ID
-                    var cancha = entities.Cancha.FirstOrDefault(c => c.idCancha == id);
-                    if (cancha != null)
+                    var entity = entities.Cancha.First(e => e.idCancha == id);
+                    if (entity != null)
                     {
                         //Se retorna el estado OK y la cancha
-                        return Request.CreateResponse(HttpStatusCode.OK, cancha);
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
@@ -172,6 +170,8 @@ namespace APIRestPichangueaVS.Controllers
             }
 
         }
+
+
 
 
 
