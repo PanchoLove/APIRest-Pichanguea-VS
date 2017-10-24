@@ -85,7 +85,7 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el jugador correspondiente a la ID
+                    //Se crea una variable con el jugador correspondiente a su nombre
                     var entity = entities.Jugador.Where(e => e.jugNombre == nombre).ToList();
                     if (entity != null)
                     {

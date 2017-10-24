@@ -12,6 +12,7 @@ namespace APIRestPichangueaVS.Controllers
     [RoutePrefix("api/Cancha")]
     public class CanchaController : ApiController
     {
+        //Funcion que retorna todas las canchas
         public HttpResponseMessage Get()
         {
             try
@@ -72,7 +73,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        //Funcion que agrega un cancha
+        //Funcion que agrega una cancha
         public HttpResponseMessage Post([FromBody]Cancha cancha)
         {
             try

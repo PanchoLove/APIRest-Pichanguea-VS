@@ -248,6 +248,7 @@
     <Compile Include="Controllers\JugadorController.cs" />
     <Compile Include="Controllers\PartidoController.cs" />
     <Compile Include="Controllers\SesionController.cs" />
+    <Compile Include="Controllers\TipoCanchaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

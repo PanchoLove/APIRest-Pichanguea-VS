@@ -6,12 +6,11 @@ using System.Net.Http;
 using System.Web.Http;
 using PichangueaDataAccess;
 
-
 namespace APIRestPichangueaVS.Controllers
 {
-    public class ComplejoDeportivoController : ApiController
+    public class TipoCanchaController : ApiController
     {
-        //Funcion que retorna la lista de complejos deportivos
+        //Funcion que retorna la lista de tipos de canchas
         public HttpResponseMessage Get()
         {
             try
@@ -19,17 +18,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una lista con todos los complejos deportivos
-                    var entity = entities.Complejo_Deportivo.ToList();
+                    //Se crea una lista con todos los tipos de canchas
+                    var entity = entities.Tipo_Cancha.ToList();
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y la lista de complejos
+                        //Se retorna el estado OK y la lista de tipos de canchas
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen complejos deportivos");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen tipos de canchas");
                     }
                 }
 
@@ -42,7 +41,7 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        //Funcion que retorna un complejo deportivo
+        //Funcion que retorna un tipo de cancha segun su id
         public HttpResponseMessage Get(int id)
         {
             try
@@ -50,17 +49,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el complejo deportivo correspondiente a la ID
-                    var entity = entities.Complejo_Deportivo.FirstOrDefault(e => e.idComplejoDeportivo == id);
+                    //Se crea una variable con el tipo de cancha correspondiente a la ID
+                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y el complejo deportivo
+                        //Se retorna el estado OK y el tipo de cancha
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Complejo con ID: " + id.ToString() + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe");
                     }
                 }
             }
@@ -72,7 +71,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-        //Funcion que retorna una lista de complejos deportivos en base a su nombre como entrada
+        //Funcion que retorna una lista de tipos de cancha en base a su nombre como entrada
         public HttpResponseMessage Get(String nombre)
         {
 
@@ -82,17 +81,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el complejo deportivo correspondiente a su nombre
-                    var entity = entities.Complejo_Deportivo.Where(e => e.cmdNombre == nombre).ToList();
+                    //Se crea una variable con el tipo de cancha correspondiente a su nombre
+                    var entity = entities.Tipo_Cancha.Where(e => e.tcaNombre == nombre).ToList();
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y el complejo deportivo
+                        //Se retorna el estado OK y los tipos de cancha
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Complejo con nombre: " + nombre + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con nombre: " + nombre + " no existe");
                     }
                 }
             }
@@ -103,8 +102,8 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        //Funcion que agrega un complejo deportivo
-        public HttpResponseMessage Post([FromBody]Complejo_Deportivo complejo)
+        //Funcion que agrega un tipo de cancha
+        public HttpResponseMessage Post([FromBody]Tipo_Cancha tca)
         {
             try
             {
@@ -112,12 +111,12 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se agrega el complejo a las entidades
-                    entities.Complejo_Deportivo.Add(complejo);
+                    entities.Tipo_Cancha.Add(tca);
                     entities.SaveChanges();
-                    //Se crea un un mensaje con el codigo Created y con el complejo ingresado
-                    var message = Request.CreateResponse(HttpStatusCode.Created, complejo);
-                    //Se concatena la ID al complejo del mensaje
-                    message.Headers.Location = new Uri(Request.RequestUri + complejo.idComplejoDeportivo.ToString());
+                    //Se crea un un mensaje con el codigo Created y con el tipo de cancha ingresado
+                    var message = Request.CreateResponse(HttpStatusCode.Created, tca);
+                    //Se concatena la ID al tipo de cancha del mensaje
+                    message.Headers.Location = new Uri(Request.RequestUri + tca.idTipoCancha.ToString());
                     return message;
                 }
             }
@@ -129,39 +128,33 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        //Funcion que modifica un complejo deportivo
-        public HttpResponseMessage Put(int id, [FromBody]Complejo_Deportivo complejo)
+        //Funcion que modifica un tipo de cancha
+        public HttpResponseMessage Put(int id, [FromBody]Tipo_Cancha tca)
         {
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el complejo correspondiente a la ID
-                    var entity = entities.Complejo_Deportivo.FirstOrDefault(e => e.idComplejoDeportivo == id);
+                    //Se crea una variable con el tipo de cancha correspondiente a la ID
+                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
                     if (entity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Complejo con ID: " + id.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
                     {
-                        //Se modifican los campos del complejo deportivo
-                        entity.cmdCelular = complejo.cmdCelular;
-                        entity.cmdCreacion = complejo.cmdCreacion;
-                        entity.cmdDireccion = complejo.cmdDireccion;
-                        entity.cmdEmail = complejo.cmdEmail;
-                        entity.cmdFax = complejo.cmdFax;
-                        entity.cmdFono = complejo.cmdFono;
-                        entity.cmdGeoreferencia = complejo.cmdGeoreferencia;
-                        entity.cmdNombre = complejo.cmdNombre;
-                        entity.cmdUrl = complejo.cmdUrl;
+                        //Se modifican los campos del tipo de cancha
+                        entity.idDeporte = tca.idDeporte;
+                        entity.tcaCreacion = tca.tcaCreacion;
+                        entity.tcaNombre = tca.tcaNombre;
 
 
                         //Se guardan los cambios
                         entities.SaveChanges();
-                        //Se retorna el estado OK y el complejo
+                        //Se retorna el estado OK y el tipo de cancha
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                 }
@@ -181,18 +174,18 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el complejo correspondiente a la ID
-                    var entity = entities.Complejo_Deportivo.FirstOrDefault(e => e.idComplejoDeportivo == id);
+                    //Se crea una variable con el tipo de cancha correspondiente a la ID
+                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
                     if (entity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Complejo con ID: " + id.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
                     {
                         //Se elimina de la BD el complejo deportivo
-                        entities.Complejo_Deportivo.Remove(entity);
+                        entities.Tipo_Cancha.Remove(entity);
                         entities.SaveChanges();
                         //Se retorna el estado OK
                         return Request.CreateResponse(HttpStatusCode.OK);
