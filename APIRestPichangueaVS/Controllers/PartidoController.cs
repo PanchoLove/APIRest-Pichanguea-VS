@@ -27,7 +27,7 @@ namespace APIRestPichangueaVS.Controllers
                     //preparando lista de retornos
                     List<PartidoCompuesto> partidosRespuesta = new List<PartidoCompuesto>();
 
-                    if (partidos != null)
+                    if (partidos != null && partidos.Count() > 0)
                     {
 
                         foreach (Partido partido in partidos) {
@@ -104,7 +104,7 @@ namespace APIRestPichangueaVS.Controllers
 */
 
 
-        // GET: api/Partido/5
+        
         //Funcion que retorna un partido en base a su id
         public HttpResponseMessage Get(int id)
         {

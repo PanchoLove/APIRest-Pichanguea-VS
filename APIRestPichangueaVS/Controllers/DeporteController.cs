@@ -1,118 +1,202 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
 using PichangueaDataAccess;
 
 namespace APIRestPichangueaVS.Controllers
 {
     public class DeporteController : ApiController
     {
-        private PichangueaUsachEntities db = new PichangueaUsachEntities();
-
-        // GET: api/Deporte
-        public IQueryable<Deporte> GetDeporte()
+        //Funcion que retorna la lista de deportes
+        public HttpResponseMessage Get()
         {
-            return db.Deporte;
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una lista con todos los deportes
+                    var entity = entities.Deporte.ToList();
+                    if (entity != null && entity.Count() > 0)
+                    {
+                        //Se retorna el estado OK y la lista de deportes
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen deportes");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
-        // GET: api/Deporte/5
-        [ResponseType(typeof(Deporte))]
-        public IHttpActionResult GetDeporte(decimal id)
+        //Funcion que retorna un deporte segun su id
+        public HttpResponseMessage Get(int id)
         {
-            Deporte deporte = db.Deporte.Find(id);
-            if (deporte == null)
+            try
             {
-                return NotFound();
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.Deporte.FirstOrDefault(e => e.idDeporte == id);
+                    if (entity != null)
+                    {
+                        //Se retorna el estado OK y el deporte
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Deporte con ID: " + id.ToString() + " no existe");
+                    }
+                }
             }
-
-            return Ok(deporte);
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
-        // PUT: api/Deporte/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutDeporte(decimal id, Deporte deporte)
+
+        //Funcion que retorna una lista de deportes en base a su nombre como entrada
+        public HttpResponseMessage Get(String nombre)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != deporte.idDeporte)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(deporte).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeporteExists(id))
+
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    return NotFound();
+                    //Se crea una variable con el deporte correspondiente a su nombre
+                    var entity = entities.Deporte.Where(e => e.depNombre == nombre).ToList();
+                    if (entity != null)
+                    {
+                        //Se retorna el estado OK y los deportes
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    else
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Deporte con nombre: " + nombre + " no existe");
+                    }
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        //Funcion que agrega un tipo de cancha
+        public HttpResponseMessage Post([FromBody]Deporte dep)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    throw;
+                    //Se agrega el deporte a las entidades
+                    entities.Deporte.Add(dep);
+                    entities.SaveChanges();
+                    //Se crea un un mensaje con el codigo Created y con el deporte ingresado
+                    var message = Request.CreateResponse(HttpStatusCode.Created, dep);
+                    //Se concatena la ID al deporte del mensaje
+                    message.Headers.Location = new Uri(Request.RequestUri + dep.idDeporte.ToString());
+                    return message;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Deporte
-        [ResponseType(typeof(Deporte))]
-        public IHttpActionResult PostDeporte(Deporte deporte)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
 
-            db.Deporte.Add(deporte);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = deporte.idDeporte }, deporte);
         }
 
-        // DELETE: api/Deporte/5
-        [ResponseType(typeof(Deporte))]
-        public IHttpActionResult DeleteDeporte(decimal id)
+        //Funcion que modifica un deporte
+        public HttpResponseMessage Put(int id, [FromBody]Deporte dep)
         {
-            Deporte deporte = db.Deporte.Find(id);
-            if (deporte == null)
+            try
             {
-                return NotFound();
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.Deporte.FirstOrDefault(e => e.idDeporte == id);
+                    if (entity == null)
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Deporte con ID: " + id.ToString() + " no existe, no es posible actualizar");
+
+                    }
+                    else
+                    {
+                        //Se modifican los campos del tipo de cancha
+                        entity.depCreacion = dep.depCreacion;
+                        entity.depFamilia = dep.depFamilia;
+                        entity.depNombre = dep.depNombre;
+
+
+                        //Se guardan los cambios
+                        entities.SaveChanges();
+                        //Se retorna el estado OK y el deporte
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                }
             }
-
-            db.Deporte.Remove(deporte);
-            db.SaveChanges();
-
-            return Ok(deporte);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            catch (Exception ex)
             {
-                db.Dispose();
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
-            base.Dispose(disposing);
         }
 
-        private bool DeporteExists(decimal id)
+        //Funcion que elimina un deporte
+        public HttpResponseMessage Delete(int id)
         {
-            return db.Deporte.Count(e => e.idDeporte == id) > 0;
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.Deporte.FirstOrDefault(e => e.idDeporte == id);
+                    if (entity == null)
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Deporte con ID: " + id.ToString() + " no existe, no es posible actualizar");
+
+                    }
+                    else
+                    {
+                        //Se elimina de la BD el complejo deportivo
+                        entities.Deporte.Remove(entity);
+                        entities.SaveChanges();
+                        //Se retorna el estado OK
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
     }
 }

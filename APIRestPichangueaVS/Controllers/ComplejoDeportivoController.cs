@@ -21,7 +21,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una lista con todos los complejos deportivos
                     var entity = entities.Complejo_Deportivo.ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y la lista de complejos
                         return Request.CreateResponse(HttpStatusCode.OK, entity);

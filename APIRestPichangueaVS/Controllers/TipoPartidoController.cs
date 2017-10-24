@@ -8,9 +8,9 @@ using PichangueaDataAccess;
 
 namespace APIRestPichangueaVS.Controllers
 {
-    public class TipoCanchaController : ApiController
+    public class TipoPartidoController : ApiController
     {
-        //Funcion que retorna la lista de tipos de canchas
+        //Funcion que retorna la lista de tipos de partidos
         public HttpResponseMessage Get()
         {
             try
@@ -18,17 +18,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una lista con todos los tipos de canchas
-                    var entity = entities.Tipo_Cancha.ToList();
+                    //Se crea una lista con todos los tipos de partidos
+                    var entity = entities.Tipo_Partido.ToList();
                     if (entity != null && entity.Count() > 0)
                     {
-                        //Se retorna el estado OK y la lista de tipos de canchas
+                        //Se retorna el estado OK y la lista de tipos de partidos
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen tipos de canchas");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen tipos de partidos");
                     }
                 }
 
@@ -41,7 +41,7 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        //Funcion que retorna un tipo de cancha segun su id
+        //Funcion que retorna un tipo de partido segun su id
         public HttpResponseMessage Get(int id)
         {
             try
@@ -49,17 +49,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el tipo de cancha correspondiente a la ID
-                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
+                    //Se crea una variable con el tipo de partido correspondiente a la ID
+                    var entity = entities.Tipo_Partido.FirstOrDefault(e => e.idTipoPartido == id);
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y el tipo de cancha
+                        //Se retorna el estado OK y el tipo de partido
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de partido con ID: " + id.ToString() + " no existe");
                     }
                 }
             }
@@ -71,7 +71,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-        //Funcion que retorna una lista de tipos de cancha en base a su nombre como entrada
+        //Funcion que retorna una lista de tipos de partido en base a su nombre como entrada
         public HttpResponseMessage Get(String nombre)
         {
 
@@ -81,17 +81,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el tipo de cancha correspondiente a su nombre
-                    var entity = entities.Tipo_Cancha.Where(e => e.tcaNombre == nombre).ToList();
+                    //Se crea una variable con el tipo de partido correspondiente a su nombre
+                    var entity = entities.Tipo_Partido.Where(e => e.tpaNombre == nombre).ToList();
                     if (entity != null)
                     {
-                        //Se retorna el estado OK y los tipos de cancha
+                        //Se retorna el estado OK y los tipos de partido
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con nombre: " + nombre + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de partido con nombre: " + nombre + " no existe");
                     }
                 }
             }
@@ -102,8 +102,8 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        //Funcion que agrega un tipo de cancha
-        public HttpResponseMessage Post([FromBody]Tipo_Cancha tca)
+        //Funcion que agrega un tipo de partido
+        public HttpResponseMessage Post([FromBody]Tipo_Partido tpa)
         {
             try
             {
@@ -111,12 +111,12 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se agrega el tipo de partido a las entidades
-                    entities.Tipo_Cancha.Add(tca);
+                    entities.Tipo_Partido.Add(tpa);
                     entities.SaveChanges();
-                    //Se crea un un mensaje con el codigo Created y con el tipo de cancha ingresado
-                    var message = Request.CreateResponse(HttpStatusCode.Created, tca);
-                    //Se concatena la ID al tipo de cancha del mensaje
-                    message.Headers.Location = new Uri(Request.RequestUri + tca.idTipoCancha.ToString());
+                    //Se crea un un mensaje con el codigo Created y con el tipo de partido ingresado
+                    var message = Request.CreateResponse(HttpStatusCode.Created, tpa);
+                    //Se concatena la ID al tipo de partido del mensaje
+                    message.Headers.Location = new Uri(Request.RequestUri + tpa.idTipoPartido.ToString());
                     return message;
                 }
             }
@@ -128,33 +128,33 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        //Funcion que modifica un tipo de cancha
-        public HttpResponseMessage Put(int id, [FromBody]Tipo_Cancha tca)
+        //Funcion que modifica un tipo de partido
+        public HttpResponseMessage Put(int id, [FromBody]Tipo_Partido tpa)
         {
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el tipo de cancha correspondiente a la ID
-                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
+                    //Se crea una variable con el tipo de partido correspondiente a la ID
+                    var entity = entities.Tipo_Partido.FirstOrDefault(e => e.idTipoPartido == id);
                     if (entity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de partido con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
                     {
                         //Se modifican los campos del tipo de cancha
-                        entity.idDeporte = tca.idDeporte;
-                        entity.tcaCreacion = tca.tcaCreacion;
-                        entity.tcaNombre = tca.tcaNombre;
+                        entity.idDeporte = tpa.idDeporte;
+                        entity.tpaMaximoJugadores = tpa.tpaMaximoJugadores;
+                        entity.tpaNombre = tpa.tpaNombre;
 
 
                         //Se guardan los cambios
                         entities.SaveChanges();
-                        //Se retorna el estado OK y el tipo de cancha
+                        //Se retorna el estado OK y el tipo de partido
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                 }
@@ -166,7 +166,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        //Funcion que elimina un tipo de cancha
+        //Funcion que elimina un tipo de partido
         public HttpResponseMessage Delete(int id)
         {
             try
@@ -174,18 +174,18 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el tipo de cancha correspondiente a la ID
-                    var entity = entities.Tipo_Cancha.FirstOrDefault(e => e.idTipoCancha == id);
+                    //Se crea una variable con el tipo de partido correspondiente a la ID
+                    var entity = entities.Tipo_Partido.FirstOrDefault(e => e.idTipoPartido == id);
                     if (entity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tipo de partido con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else
                     {
                         //Se elimina de la BD el complejo deportivo
-                        entities.Tipo_Cancha.Remove(entity);
+                        entities.Tipo_Partido.Remove(entity);
                         entities.SaveChanges();
                         //Se retorna el estado OK
                         return Request.CreateResponse(HttpStatusCode.OK);

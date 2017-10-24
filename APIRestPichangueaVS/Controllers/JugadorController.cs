@@ -25,7 +25,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una lista con todos los jugadores
                     var entity = entities.Jugador.ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y la lista de jugadores
                         return Request.CreateResponse(HttpStatusCode.OK, entity);

@@ -24,7 +24,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una lista con todos los Equipos
                     var entity = entities.Equipo.ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y la lista de Equipos
                         return Request.CreateResponse(HttpStatusCode.OK, entity);

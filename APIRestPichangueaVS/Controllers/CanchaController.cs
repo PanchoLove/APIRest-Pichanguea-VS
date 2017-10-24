@@ -22,7 +22,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una lista con todos los canchas
                     var canchas = entities.Cancha.ToList();
-                    if (canchas != null)
+                    if (canchas != null && canchas.Count() > 0)
                     {
                         //Se retorna el estado OK y la lista de canchas
                         return Request.CreateResponse(HttpStatusCode.OK, canchas);
@@ -30,7 +30,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen Partidos");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen canchas");
                     }
                 }
 
@@ -43,7 +43,6 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        // GET: api/Partido/5
         //Funcion que retorna un cancha en base a su id
         public HttpResponseMessage Get(int id)
         {
@@ -52,17 +51,17 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una variable con el cancha correspondiente a la ID
-                    var partido = entities.Partido.FirstOrDefault(p => p.idPartido == id);
-                    if (partido != null)
+                    //Se crea una variable con la cancha correspondiente a la ID
+                    var cancha = entities.Cancha.FirstOrDefault(c => c.idCancha == id);
+                    if (cancha != null)
                     {
-                        //Se retorna el estado OK y el cancha
-                        return Request.CreateResponse(HttpStatusCode.OK, partido);
+                        //Se retorna el estado OK y la cancha
+                        return Request.CreateResponse(HttpStatusCode.OK, cancha);
                     }
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Partido con ID: " + id.ToString() + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cancha con ID: " + id.ToString() + " no existe");
                     }
                 }
             }
@@ -82,12 +81,12 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
 
-                    //Se agrega el cancha a las entidades
+                    //Se agrega la cancha a las entidades
                     entities.Cancha.Add(cancha);
                     entities.SaveChanges();
-                    //Se crea un un mensaje con el codigo Created y con el cancha ingresado
+                    //Se crea un un mensaje con el codigo Created y con la cancha ingresada
                     var message = Request.CreateResponse(HttpStatusCode.Created, cancha);
-                    //Se concatena la ID al cancha del mensaje
+                    //Se concatena la ID a la cancha del mensaje
                     message.Headers.Location = new Uri(Request.RequestUri + cancha.idCancha.ToString());
                     return message;
                 }
@@ -118,11 +117,12 @@ namespace APIRestPichangueaVS.Controllers
                     }
                     else
                     {
-                        //Se modifican los campos del cancha
+                        //Se modifican los campos de cancha
                         canchaEntity.canCreacion = cancha.canCreacion;
                         canchaEntity.canNombre = cancha.canNombre;
                         canchaEntity.idComplejoDeportivo = cancha.idComplejoDeportivo;
                         canchaEntity.idTipoCancha = cancha.idTipoCancha;
+
 
                         //Se guardan los cambios
                         entities.SaveChanges();
@@ -138,7 +138,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        // DELETE: api/Partido/5
+        // funcion que borrar una cancha dada su id
         public HttpResponseMessage Delete(int id)
         {
 
