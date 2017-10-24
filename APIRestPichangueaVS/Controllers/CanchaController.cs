@@ -98,7 +98,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
         //Funcion que modifica un cancha
-        public HttpResponseMessage Put(int idCancha, [FromBody]Cancha cancha)
+        public HttpResponseMessage Put(int id, [FromBody]Cancha cancha)
         {
             try
             {
@@ -106,11 +106,11 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con el cancha correspondiente a la ID
-                    var canchaEntity = entities.Cancha.FirstOrDefault(c => c.idCancha == idCancha);
+                    var canchaEntity = entities.Cancha.FirstOrDefault(c => c.idCancha == id);
                     if (canchaEntity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cancha con ID: " + idCancha.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cancha con ID: " + id.ToString() + " no existe, no es posible actualizar");
 
                     }
                     else

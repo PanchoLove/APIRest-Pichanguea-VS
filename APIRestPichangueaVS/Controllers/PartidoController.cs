@@ -9,7 +9,7 @@ using APIRestPichangueaVS.AdditionaModels;
 
 namespace APIRestPichangueaVS.Controllers
 {
-    //[RoutePrefix("api/Partido")]
+    [RoutePrefix("api/Partido")]
     public class PartidoController : ApiController
     {
 
