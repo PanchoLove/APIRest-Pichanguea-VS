@@ -119,7 +119,7 @@ Existen 2 maneras, una es desde la URL de api/jugador/{idJugador}/Partidos/{idPa
 
 @GET ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Chat ```
 
-### Enviar un mensaje a un caht de partido
+### Enviar un mensaje a un chat de partido
 Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia el body del post
 
 @GET ``` api/Partido/{idPartido}/Chat ```
@@ -150,7 +150,7 @@ Analogo a obtener los mensajes de un partido:
 
 @GET ``` api/Equipo/{idJugador}/Partidos/{idPartido}/Chat ```
 
-### Enviar un mensaje a un caht de partido
+### Enviar un mensaje a un chat de partido
 idem
 
 @GET ``` api/Equipo/{idPartido}/Chat ```
