@@ -347,6 +347,7 @@ namespace APIRestPichangueaVS.Controllers
                     //recorrer la lista de filas que relacionan jugador con partido y obtener el partido correspondiente
                     foreach (Partido_Jugador pj in intermedios)
                     {
+                        //no estas controlando si es que partido es nulo, de ser nulo puede fallar
                         var partido = entities.Partido.FirstOrDefault(p => p.idPartido == pj.idPartido);
 
                         PartidoCompuesto pc = new PartidoCompuesto();

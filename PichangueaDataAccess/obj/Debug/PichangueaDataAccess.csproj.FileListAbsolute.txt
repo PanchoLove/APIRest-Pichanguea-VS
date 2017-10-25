@@ -1,28 +1,3 @@
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll.config
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.pdb
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\EntityFramework.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\EntityFramework.xml
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.xml
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\es\EntityFramework.resources.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\bin\Debug\es\EntityFramework.SqlServer.resources.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csprojResolveAssemblyReference.cache
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.dll
-c:\users\francisco\documents\visual studio 2015\Projects\APIRestPichangueaVS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.pdb
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll.config
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.pdb
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.xml
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.resources.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.SqlServer.resources.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csprojResolveAssemblyReference.cache
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csproj.CoreCompileInputs.cache
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.dll
-C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.pdb
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll.config
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.pdb

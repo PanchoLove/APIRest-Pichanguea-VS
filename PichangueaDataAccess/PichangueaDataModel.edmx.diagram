@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1377b8af5a6f4f35801ea1a462e3871a" Name="Diagram1" ZoomLevel="97">
+      <Diagram DiagramId="db6d2de0c1bb44568b7a7354a1c0ece5" Name="Diagram1">
         <EntityTypeShape EntityType="PichangueaUsachModel.Auditoria" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PichangueaUsachModel.Cancha" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PichangueaUsachModel.Complejo_Deportivo" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />

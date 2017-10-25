@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIRestPichangueaVS", "APIRestPichangueaVS\APIRestPichangueaVS.csproj", "{B68C4F25-F3B1-4B63-882F-A9DB4F574F4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PichangueaDataAccess", "PichangueaDataAccess\PichangueaDataAccess.csproj", "{0EFBCC4B-ACAF-47D2-A19B-051A405EBC32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PichangueaDataAccess", "PichangueaDataAccess\PichangueaDataAccess.csproj", "{2E9E596E-8A15-4D4F-A205-04E78BE0E595}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{B68C4F25-F3B1-4B63-882F-A9DB4F574F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68C4F25-F3B1-4B63-882F-A9DB4F574F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68C4F25-F3B1-4B63-882F-A9DB4F574F4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EFBCC4B-ACAF-47D2-A19B-051A405EBC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EFBCC4B-ACAF-47D2-A19B-051A405EBC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EFBCC4B-ACAF-47D2-A19B-051A405EBC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EFBCC4B-ACAF-47D2-A19B-051A405EBC32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9E596E-8A15-4D4F-A205-04E78BE0E595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9E596E-8A15-4D4F-A205-04E78BE0E595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9E596E-8A15-4D4F-A205-04E78BE0E595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9E596E-8A15-4D4F-A205-04E78BE0E595}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
