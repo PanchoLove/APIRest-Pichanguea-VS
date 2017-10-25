@@ -50,7 +50,7 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
                     //Se crea una variable con la cancha correspondiente a la ID
-                    var entity = entities.Cancha.First(e => e.idCancha == id);
+                    var entity = entities.Cancha.FirstOrDefault(e => e.idCancha == id);
                     if (entity != null)
                     {
                         //Se retorna el estado OK y la cancha

@@ -23,3 +23,15 @@ C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\ob
 C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csproj.CoreCompileInputs.cache
 C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.dll
 C:\Users\gustavo\Desktop\pichangea\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.pdb
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll.config
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\PichangueaDataAccess.pdb
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.xml
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.resources.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.SqlServer.resources.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.dll
+C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.pdb

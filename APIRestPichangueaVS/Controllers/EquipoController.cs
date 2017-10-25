@@ -137,6 +137,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+        //Funcion que crea una invitacion de un jugador a un equipo
         [Route("{idEquipo:int}/InvitarJugador/{idJugador:int}")]
         public HttpResponseMessage PostInvitacion(int idEquipo, int idJugador)
         {
@@ -171,7 +172,7 @@ namespace APIRestPichangueaVS.Controllers
 
 
 
-        //Funcion que modifica un jugador
+        //Funcion que modifica un equipo
         public HttpResponseMessage Put(int id, [FromBody]Equipo equipo)
         {
 
