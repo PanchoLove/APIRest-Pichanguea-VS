@@ -15,51 +15,42 @@ namespace APIRestPichangueaVS.Controllers
 
         public HttpResponseMessage Get()
         {
+
             try
             {
+
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //Se crea una lista con todos los partidos
-                    var partidos = entities.Partido.ToList();
 
+                    //metodo 2 obtener el cruce de las tablas jugador, partido y partidoJugador
+                    /*   var consulta = (from pj in entities.Partido_Jugador
+                                       join p in entities.Partido on pj.idJugador == p. )*/
 
-                    //preparando lista de retornos
-                    List<PartidoCompuesto> partidosRespuesta = new List<PartidoCompuesto>();
+                    var consulta = entities.Partido.Join(entities.Equipo,
+                                                          p => p.idEquipo,
+                                                          e => e.idEquipo,
+                                                          (partidoT, equipo)
+                                                          => new
+                                                              {
+                                                                  idPartido = partidoT.idPartido,
+                                                                  equipo = equipo,
+                                                                  tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido),
+                                                                  parCancha = partidoT.parCancha,
+                                                                  parComplejo = partidoT.parComplejo,
+                                                                  parCreacion = partidoT.parCreacion,
+                                                                  parEstado = partidoT.parEstado,
+                                                                  parFecha = partidoT.parFecha,
+                                                                  parGeoReferencia = partidoT.parGeoReferencia,
+                                                                  parHora = partidoT.parHora,
+                                                                  parRival = partidoT.parRival,
+                                                                  parUbicacion = partidoT.parUbicacion,
+                                                                  parIncidentes = entities.Partido_Incidente.Where(pi => pi.idPartido == partidoT.idPartido)
+                                                              }
+                                                          ).ToList();
 
-                    if (partidos != null && partidos.Count() > 0)
-                    {
-
-                        foreach (Partido partido in partidos) {
-
-                            PartidoCompuesto pc = new PartidoCompuesto();
-
-                            pc.idPartido = partido.idPartido;
-                            pc.equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partido.idEquipo);
-                            pc.Tipo_Partido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partido.idTipoPartido);
-                            pc.parCancha = partido.parCancha;
-                            pc.parComplejo = partido.parComplejo;
-                            pc.parCreacion = partido.parCreacion;
-                            pc.parEstado = partido.parEstado;
-                            pc.parFecha = partido.parFecha;
-                            pc.parGeoReferencia = partido.parGeoReferencia;
-                            pc.parHora = partido.parHora;
-                            pc.parRival = partido.parRival;
-                            pc.parUbicacion = partido.parUbicacion;
-
-                            partidosRespuesta.Add(pc);
-                        }
-
-                        //Se retorna el estado OK y la lista de partidos
-                        return Request.CreateResponse(HttpStatusCode.OK, partidosRespuesta);
-                    }
-                    else
-                    {
-                        //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No existen Partidos");
-                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, consulta);
                 }
-
             }
             catch (Exception ex)
             {
@@ -290,37 +281,38 @@ namespace APIRestPichangueaVS.Controllers
         [Route("{idPartido:int}/Chat")]
         public HttpResponseMessage GetChat(int idPartido)
         {
-
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
+    
                     //se obtienen todos los registros de chat para el idPartido
-                    var chat = entities.Partido_Chat.Where(pch => pch.idPartido == idPartido).ToList();
+                    var chat = entities.Partido_Chat.Where(pch => pch.idPartido == idPartido)
+                                                      .Join(entities.Jugador,
+                                                            pch => pch.idJugador,
+                                                            j => j.idJugador,
+                                                            (mensaje, jugador) => new
+                                                            {
+                                                                autor = new
+                                                                {
+                                                                    idJugador = jugador.idJugador,
+                                                                    jugUsername = jugador.jugUsername,
+                                                                    jugFoto = jugador.jugFoto,
+                                                                    jugApodo = jugador.jugApodo
+                                                                },
+
+                                                                contenidoMensaje = mensaje.pchMensaje,
+                                                                creacion = mensaje.pchCreacion
+                                                            }
+                                                            ).ToList();
 
                     if (chat != null)
                     {
-
-                            //se entregan los mensajes del chat en un formato mas manejable por la parte del front-end
-                            List<Mensaje> mensajes = new List<Mensaje>();
-
-                            foreach (Partido_Chat c  in chat) {
-
-                                Jugador jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == c.idJugador);
-                                JugadorSimple autor = new JugadorSimple( jugador.idJugador,
-                                                                         jugador.jugUsername,
-                                                                         jugador.jugFoto,
-                                                                          jugador.jugApodo);
-
-                                Mensaje mensaje = new Mensaje(autor, c.pchMensaje, c.pchCreacion);
-                                mensajes.Add(mensaje);
-                            }
-
-                            return Request.CreateResponse(HttpStatusCode.OK, mensajes);
+                        return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }
-                    else {
-
+                    else
+                    {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
                     }
                 }
@@ -361,7 +353,7 @@ namespace APIRestPichangueaVS.Controllers
                     pch.idJugador = mensaje.idJugador;
                     pch.idPartido = idPartido;
                     pch.pchCreacion = DateTime.Now;
-                    pch.pchMensaje = mensaje.contenido;
+                    pch.pchMensaje = mensaje.contenidoMensaje;
                     
 
                     entities.Partido_Chat.Add(pch);

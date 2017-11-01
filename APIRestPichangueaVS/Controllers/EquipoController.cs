@@ -252,39 +252,38 @@ namespace APIRestPichangueaVS.Controllers
         [Route("{idEquipo:int}/Chat")]
         public HttpResponseMessage GetChat(int idEquipo)
         {
-
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
+
                     //se obtienen todos los registros de chat para el idPartido
-                    var chat = entities.Equipo_Chat.Where(ech => ech.idEquipo == idEquipo).ToList();
+                    var chat = entities.Equipo_Chat.Where(ech => ech.idEquipo == idEquipo)
+                                                      .Join(entities.Jugador,
+                                                            pch => pch.idJugador,
+                                                            j => j.idJugador,
+                                                            (mensaje, jugador) => new
+                                                            {
+                                                                autor = new
+                                                                {
+                                                                    idJugador = jugador.idJugador,
+                                                                    jugUsername = jugador.jugUsername,
+                                                                    jugFoto = jugador.jugFoto,
+                                                                    jugApodo = jugador.jugApodo
+                                                                },
+
+                                                                contenidoMensaje = mensaje.echMensaje,
+                                                                creacion = mensaje.echaCreacion
+                                                            }
+                                                            ).ToList();
 
                     if (chat != null)
                     {
-
-                        //se entregan los mensajes del chat en un formato mas manejable por la parte del front-end
-                        List<Mensaje> mensajes = new List<Mensaje>();
-
-                        foreach (Equipo_Chat e in chat)
-                        {
-
-                            Jugador jugador = entities.Jugador.FirstOrDefault(j => j.idJugador == e.idJugador);
-                            JugadorSimple autor = new JugadorSimple(jugador.idJugador,
-                                                                     jugador.jugUsername,
-                                                                     jugador.jugFoto,
-                                                                     jugador.jugApodo);
-                            
-                            Mensaje mensaje = new Mensaje(autor, e.echMensaje, e.echaCreacion);
-                            mensajes.Add(mensaje);
-                        }
-
-                        return Request.CreateResponse(HttpStatusCode.OK, mensajes);
+                        return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }
                     else
                     {
-
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
                     }
                 }
@@ -323,7 +322,7 @@ namespace APIRestPichangueaVS.Controllers
                     ech.idJugador = mensaje.idJugador;
                     ech.idEquipo= idEquipo;
                     ech.echaCreacion = DateTime.Now;
-                    ech.echMensaje = mensaje.contenido;
+                    ech.echMensaje = mensaje.contenidoMensaje;
 
 
                     entities.Equipo_Chat.Add(ech);
@@ -340,6 +339,51 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
+        [Route("{idEquipo:int}/SolicitarIngreso")]
+        [Route("{idEquipo:int}/SolicitarIngreso/{idJugador:int}")]
+        public HttpResponseMessage PostSolicitarIngreso(int idEquipo,int idJugador)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //verificar si existe una solicitud de ingreso
+                    var comprobacion0 = entities.Equipo_Solicita_Ingreso.FirstOrDefault(esi => esi.idJugador == idJugador &&
+                                                                                               esi.idEquipo==idEquipo &&
+                                                                                               esi.esiEstado == 0
+                                                                                               );
+
+                    if (comprobacion0 != null) { return Request.CreateErrorResponse(HttpStatusCode.NotModified, "Ya existe una solicitud pendiente"); }
+
+                    //verificar si existe el equipo
+                    var comprobacion1 = entities.Equipo.FirstOrDefault(e => e.idEquipo==e.idEquipo);
+                    if (comprobacion1==null) { return Request.CreateErrorResponse(HttpStatusCode.NotFound,"El equipo de id: "+ idEquipo.ToString()+ "no existe"); }
+
+                    //verificar si eljugador existe
+                    var comprobacion2 = entities.Jugador.FirstOrDefault(j => j.idJugador == j.idJugador);
+                    if (comprobacion2 == null) { return Request.CreateErrorResponse(HttpStatusCode.NotFound, "El jugador de id: " + idEquipo.ToString() + "no existe"); }
+
+                    var solicitud = new Equipo_Solicita_Ingreso();
+                    solicitud.esiCreacion = DateTime.Now;
+                    solicitud.esiEstado = 0;
+                    solicitud.idEquipo = idEquipo;
+                    solicitud.idJugador = idJugador;
+
+                    entities.Equipo_Solicita_Ingreso.Add(solicitud);
+                    entities.SaveChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.Created, "Solicitud enviado al equipo: " + solicitud.idEquipo.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
 
 
 

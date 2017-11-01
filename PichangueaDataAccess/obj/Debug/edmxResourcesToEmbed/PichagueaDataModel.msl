@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PichangueaUsachModelStoreContainer" CdmEntityContainer="PichangueaUsachEntities">
+    <EntitySetMapping Name="Auditoria">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Auditoria">
+        <MappingFragment StoreEntitySet="Auditoria">
+          <ScalarProperty Name="idAuditoria" ColumnName="idAuditoria" />
+          <ScalarProperty Name="audTipo" ColumnName="audTipo" />
+          <ScalarProperty Name="audPagina" ColumnName="audPagina" />
+          <ScalarProperty Name="audEvento" ColumnName="audEvento" />
+          <ScalarProperty Name="audId" ColumnName="audId" />
+          <ScalarProperty Name="audTexto" ColumnName="audTexto" />
+          <ScalarProperty Name="audError" ColumnName="audError" />
+          <ScalarProperty Name="audIp" ColumnName="audIp" />
+          <ScalarProperty Name="audUsuario" ColumnName="audUsuario" />
+          <ScalarProperty Name="audCreacion" ColumnName="audCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cancha">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Cancha">
+        <MappingFragment StoreEntitySet="Cancha">
+          <ScalarProperty Name="idCancha" ColumnName="idCancha" />
+          <ScalarProperty Name="idTipoCancha" ColumnName="idTipoCancha" />
+          <ScalarProperty Name="idComplejoDeportivo" ColumnName="idComplejoDeportivo" />
+          <ScalarProperty Name="canNombre" ColumnName="canNombre" />
+          <ScalarProperty Name="canCreacion" ColumnName="canCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Complejo_Deportivo">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Complejo_Deportivo">
+        <MappingFragment StoreEntitySet="Complejo_Deportivo">
+          <ScalarProperty Name="idComplejoDeportivo" ColumnName="idComplejoDeportivo" />
+          <ScalarProperty Name="cmdNombre" ColumnName="cmdNombre" />
+          <ScalarProperty Name="cmdDireccion" ColumnName="cmdDireccion" />
+          <ScalarProperty Name="cmdFono" ColumnName="cmdFono" />
+          <ScalarProperty Name="cmdCelular" ColumnName="cmdCelular" />
+          <ScalarProperty Name="cmdFax" ColumnName="cmdFax" />
+          <ScalarProperty Name="cmdEmail" ColumnName="cmdEmail" />
+          <ScalarProperty Name="cmdGeoreferencia" ColumnName="cmdGeoreferencia" />
+          <ScalarProperty Name="cmdUrl" ColumnName="cmdUrl" />
+          <ScalarProperty Name="cmdCreacion" ColumnName="cmdCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Deporte">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Deporte">
+        <MappingFragment StoreEntitySet="Deporte">
+          <ScalarProperty Name="idDeporte" ColumnName="idDeporte" />
+          <ScalarProperty Name="depNombre" ColumnName="depNombre" />
+          <ScalarProperty Name="depFamilia" ColumnName="depFamilia" />
+          <ScalarProperty Name="depCreacion" ColumnName="depCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Equipo">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Equipo">
+        <MappingFragment StoreEntitySet="Equipo">
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="equNombre" ColumnName="equNombre" />
+          <ScalarProperty Name="equEscudo" ColumnName="equEscudo" />
+          <ScalarProperty Name="equDescripcion" ColumnName="equDescripcion" />
+          <ScalarProperty Name="equUrl" ColumnName="equUrl" />
+          <ScalarProperty Name="equEmail" ColumnName="equEmail" />
+          <ScalarProperty Name="equContacto" ColumnName="equContacto" />
+          <ScalarProperty Name="equContactoFono" ColumnName="equContactoFono" />
+          <ScalarProperty Name="equContactoCelular" ColumnName="equContactoCelular" />
+          <ScalarProperty Name="equContactoEmail" ColumnName="equContactoEmail" />
+          <ScalarProperty Name="equCreacion" ColumnName="equCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Equipo_Chat">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Equipo_Chat">
+        <MappingFragment StoreEntitySet="Equipo_Chat">
+          <ScalarProperty Name="idEquipoChat" ColumnName="idEquipoChat" />
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="echMensaje" ColumnName="echMensaje" />
+          <ScalarProperty Name="echaCreacion" ColumnName="echaCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Equipo_Invitacion">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Equipo_Invitacion">
+        <MappingFragment StoreEntitySet="Equipo_Invitacion">
+          <ScalarProperty Name="idEquipoInvitacion" ColumnName="idEquipoInvitacion" />
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="einEstado" ColumnName="einEstado" />
+          <ScalarProperty Name="einCreacion" ColumnName="einCreacion" />
+          <ScalarProperty Name="einModificacion" ColumnName="einModificacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Equipo_Jugador">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Equipo_Jugador">
+        <MappingFragment StoreEntitySet="Equipo_Jugador">
+          <ScalarProperty Name="idEquipoJugador" ColumnName="idEquipoJugador" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="ejuRol" ColumnName="ejuRol" />
+          <ScalarProperty Name="ejuEstado" ColumnName="ejuEstado" />
+          <ScalarProperty Name="ejuCreacion" ColumnName="ejuCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Equipo_Solicita_Ingreso">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Equipo_Solicita_Ingreso">
+        <MappingFragment StoreEntitySet="Equipo_Solicita_Ingreso">
+          <ScalarProperty Name="idEquipoSolicitaIngreso" ColumnName="idEquipoSolicitaIngreso" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="esiCreacion" ColumnName="esiCreacion" />
+          <ScalarProperty Name="esiEstado" ColumnName="esiEstado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Jugador">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Jugador">
+        <MappingFragment StoreEntitySet="Jugador">
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="jugUsername" ColumnName="jugUsername" />
+          <ScalarProperty Name="jugPassword" ColumnName="jugPassword" />
+          <ScalarProperty Name="jugRut" ColumnName="jugRut" />
+          <ScalarProperty Name="jugRutDv" ColumnName="jugRutDv" />
+          <ScalarProperty Name="jugNombre" ColumnName="jugNombre" />
+          <ScalarProperty Name="jugPaterno" ColumnName="jugPaterno" />
+          <ScalarProperty Name="jugMaterno" ColumnName="jugMaterno" />
+          <ScalarProperty Name="jugFono" ColumnName="jugFono" />
+          <ScalarProperty Name="jugCelular" ColumnName="jugCelular" />
+          <ScalarProperty Name="jugEmail" ColumnName="jugEmail" />
+          <ScalarProperty Name="jugFoto" ColumnName="jugFoto" />
+          <ScalarProperty Name="jugCreacion" ColumnName="jugCreacion" />
+          <ScalarProperty Name="jugApodo" ColumnName="jugApodo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Partido">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Partido">
+        <MappingFragment StoreEntitySet="Partido">
+          <ScalarProperty Name="idPartido" ColumnName="idPartido" />
+          <ScalarProperty Name="idTipoPartido" ColumnName="idTipoPartido" />
+          <ScalarProperty Name="idEquipo" ColumnName="idEquipo" />
+          <ScalarProperty Name="parFecha" ColumnName="parFecha" />
+          <ScalarProperty Name="parHora" ColumnName="parHora" />
+          <ScalarProperty Name="parRival" ColumnName="parRival" />
+          <ScalarProperty Name="parComplejo" ColumnName="parComplejo" />
+          <ScalarProperty Name="parCancha" ColumnName="parCancha" />
+          <ScalarProperty Name="parUbicacion" ColumnName="parUbicacion" />
+          <ScalarProperty Name="parGeoReferencia" ColumnName="parGeoReferencia" />
+          <ScalarProperty Name="parEstado" ColumnName="parEstado" />
+          <ScalarProperty Name="parCreacion" ColumnName="parCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Partido_Chat">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Partido_Chat">
+        <MappingFragment StoreEntitySet="Partido_Chat">
+          <ScalarProperty Name="idPartidoChat" ColumnName="idPartidoChat" />
+          <ScalarProperty Name="idPartido" ColumnName="idPartido" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="pchMensaje" ColumnName="pchMensaje" />
+          <ScalarProperty Name="pchCreacion" ColumnName="pchCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Partido_Incidente">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Partido_Incidente">
+        <MappingFragment StoreEntitySet="Partido_Incidente">
+          <ScalarProperty Name="idPartidoIncidente" ColumnName="idPartidoIncidente" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="idPartido" ColumnName="idPartido" />
+          <ScalarProperty Name="pinTarjetaAmarilla" ColumnName="pinTarjetaAmarilla" />
+          <ScalarProperty Name="pinTarjetaRoja" ColumnName="pinTarjetaRoja" />
+          <ScalarProperty Name="pinGol" ColumnName="pinGol" />
+          <ScalarProperty Name="pinCreacion" ColumnName="pinCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Partido_Jugador">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Partido_Jugador">
+        <MappingFragment StoreEntitySet="Partido_Jugador">
+          <ScalarProperty Name="idPartidoJugador" ColumnName="idPartidoJugador" />
+          <ScalarProperty Name="idJugador" ColumnName="idJugador" />
+          <ScalarProperty Name="idPartido" ColumnName="idPartido" />
+          <ScalarProperty Name="pjuGalleta" ColumnName="pjuGalleta" />
+          <ScalarProperty Name="pjuEstado" ColumnName="pjuEstado" />
+          <ScalarProperty Name="pjuCreacion" ColumnName="pjuCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tipo_Cancha">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Tipo_Cancha">
+        <MappingFragment StoreEntitySet="Tipo_Cancha">
+          <ScalarProperty Name="idTipoCancha" ColumnName="idTipoCancha" />
+          <ScalarProperty Name="idDeporte" ColumnName="idDeporte" />
+          <ScalarProperty Name="tcaNombre" ColumnName="tcaNombre" />
+          <ScalarProperty Name="tcaCreacion" ColumnName="tcaCreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tipo_Partido">
+      <EntityTypeMapping TypeName="PichangueaUsachModel.Tipo_Partido">
+        <MappingFragment StoreEntitySet="Tipo_Partido">
+          <ScalarProperty Name="idTipoPartido" ColumnName="idTipoPartido" />
+          <ScalarProperty Name="idDeporte" ColumnName="idDeporte" />
+          <ScalarProperty Name="tpaNombre" ColumnName="tpaNombre" />
+          <ScalarProperty Name="tpaMaximoJugadores" ColumnName="tpaMaximoJugadores" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

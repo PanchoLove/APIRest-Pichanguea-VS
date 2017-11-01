@@ -335,7 +335,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PichangueaDataAccess\PichangueaDataAccess.csproj">
-      <Project>{2e9e596e-8a15-4d4f-a205-04e78be0e595}</Project>
+      <Project>{0efbcc4b-acaf-47d2-a19b-051a405ebc32}</Project>
       <Name>PichangueaDataAccess</Name>
     </ProjectReference>
   </ItemGroup>
