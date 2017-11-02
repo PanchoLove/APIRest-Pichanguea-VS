@@ -16,15 +16,18 @@ resumen:
     -ver informacion de un equipo
     -ver informacion de un jugador
     -obtener los partidos de un jugador
+    -obtener los partidos recientes del jugador (>año actual)
+    -obtener los partidos proximos del jugador (>fecha actual)
     -obtener los equipos de un jugador
     -modificar asistencia de un jugador
     -modificar asistencia de un jugador incluyendo galletas
     -agregar galletas
     -modificar cantidad de galletas
     -obtener los mensajes del chat de un partido
-    -enviar un mensaje a un caht de partido
+    -enviar un mensaje a un chat de partido
     -obtener los mensajes del chat de un equipo
-    -enviar un mensaje a un caht de equipo
+    -enviar un mensaje a un chat de equipo
+    -solicitar ingreso a un equipo
 
 
 ### Crear Usuario (Jugador)
@@ -57,6 +60,7 @@ body:
 
 @GET : ```api/Sesion?usuario={usuario}&pass={pass}```
 
+Donde "usuario" puede ser el username o el correo
 Se retorna un json con el jugador + un token de prueba (version simplificada respecto de la version anterior)
 
 ### ver informacion de un partido
@@ -85,6 +89,18 @@ ejemplo2: api/Partido/1
 @GET: ``` api/Jugador/{idJugador}/Partidos ```
 
 ejemplo: api/Jugador/1/Partidos
+
+### obtener los partidos recientes del jugador (>año actual)
+
+retorna todos aquellos partidos del jugador en donde se cumpla que (año partido) >= (año actual) 
+
+@GET ``` api/Jugador/{idJugador}/Partidos/Recientes ```
+
+### obtener los partidos proximos del jugador (>fecha actual)
+
+retorna todos aquellos partidos en donde se cumpla que (fecha partido) >= (fecha actual) , (precision en comprobacion: año, mes, hora y minutos)
+
+@GET ``` api/Jugador/{idJugador}/Partidos/Proximos ```
 
 ### obtener los equipos de un jugador
 
@@ -129,7 +145,7 @@ Body:
 	{
 	  "idPartido": 1.0,
 	  "idJugador": 1.0,
-	  "contenido": "sample string 1"
+	  "contenidoMensaje": "sample string 1"
 	} 
 ```
 
@@ -139,7 +155,7 @@ Body:
 Body: 
 ``` 
 	{
-	  "contenido": "sample string 1"
+	  "contenidoMensaje": "sample string 1"
 	}  
 ```
 
@@ -150,7 +166,7 @@ Analogo a obtener los mensajes de un partido:
 
 @GET ``` api/Equipo/{idJugador}/Partidos/{idPartido}/Chat ```
 
-### Enviar un mensaje a un chat de partido
+### Enviar un mensaje a un chat de Equipo
 idem
 
 @GET ``` api/Equipo/{idPartido}/Chat ```
@@ -160,7 +176,7 @@ Body:
 	{
 	  "idPartido": 1.0,
 	  "idJugador": 1.0,
-	  "contenido": "sample string 1"
+	  "contenidoMensaje": "sample string 1"
 	}  
 ```
 
@@ -170,7 +186,14 @@ Body:
 Body: 
 ```
 	{
-	  "contenido": "sample string 1"
+	  "contenidoMensaje": "sample string 1"
 	}  
 ```
+
+### solicitar ingreso a un equipo
+
+@POST ``` api/Equipo/{idEquipo}/SolicitarIngreso/{idJugador} ```
+
+@POST ``` api/Equipo/{idEquipo}/SolicitarIngreso?idJugador={idJugador} ```
+
 

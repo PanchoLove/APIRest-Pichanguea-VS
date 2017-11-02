@@ -431,6 +431,68 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+        [Route("{idJugador:int}/Partidos/{idPartido:int}/Jugadores/Confirmados")]
+        public HttpResponseMessage GetJugadoresPartido(int idJugador, int idPartido)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //obtener la lista de partidos pertenecientes al jugador
+
+                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempos
+                    var intermedio = entities.Partido_Jugador.Where(pj => pj.idJugador == idJugador && pj.idPartido == idPartido);
+
+                    if (intermedio == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe o no posee partidos");
+                    }
+                    else
+                    {
+                        /* var jugadoresConfirmados = entities.Jugador.Join(entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido),
+                                                                          j => idJugador,
+                                                                          pj => idJugador,
+                                                                          (jug, parJug) => jug
+                                                                           );*/
+
+                        var confirmados = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido)
+                                                                  .Join(entities.Jugador,
+                                                                       pj => pj.idJugador,
+                                                                        j => j.idJugador,
+                                                                        (parJug, jug) => jug
+                                                                        );
+
+                      /*  var equipo = entities.Equipo.FirstOrDefault(e=> e.idEquipo == 
+                                                entities.Partido.FirstOrDefault(p=> p.idPartido == idPartido).idEquipo);
+
+                        var otrosJugadores = entities.Equipo_Jugador.Where(e => equipo.idEquipo == e.idEquipo)
+                                                                            .Join(entities.Jugador,
+                                                                                  ej => ej.idJugador,
+                                                                                  j => j.idJugador,
+                                                                                  (ejug,jug)=>jug);
+
+
+                        var jugadores = new {
+                                                jugadoresConfirmados = jugadoresConfirmados,
+                            //otrosJugadores = otrosJugadores
+                                            };*/
+
+
+                        return Request.CreateResponse(HttpStatusCode.OK, confirmados.ToList());
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+
 
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/{estado:int}")]
         public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado)
