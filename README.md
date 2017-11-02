@@ -1,4 +1,4 @@
-# APIRest-Pichanguea-VS
+﻿# APIRest-Pichanguea-VS
 API Rest pichanguea creado con C#
 
 
@@ -63,7 +63,7 @@ body:
 Donde "usuario" puede ser el username o el correo
 Se retorna un json con el jugador + un token de prueba (version simplificada respecto de la version anterior)
 
-### ver informacion de un partido
+### Ver informacion de un partido
 
 @GET : ```api/Partido/{id}```
 
@@ -74,45 +74,45 @@ ejemplo2: api/Partido/1
 (Si no se incluye el id retorna una lista con todos los partidos, de aqui en mas aplica lo mismo para todas las Urls como por ejemplo equipo, usuario, etc)
 
 
-### ver informacion de un equipo
+### Ver informacion de un equipo
 
-@GET : ```api/Partido/{id}```
+@GET : ```api/Equipo/{id}```
 
 
-### ver informacion de un jugador
+### Ver informacion de un jugador
 
 @GET: ``` api/Jugador/{id} ```
 
 
-### obtener los partidos de un jugador
+### Obtener los partidos de un jugador
 
 @GET: ``` api/Jugador/{idJugador}/Partidos ```
 
 ejemplo: api/Jugador/1/Partidos
 
-### obtener los partidos recientes del jugador (>año actual)
+### Obtener los partidos recientes del jugador (>año actual)
 
 retorna todos aquellos partidos del jugador en donde se cumpla que (año partido) >= (año actual) 
 
 @GET ``` api/Jugador/{idJugador}/Partidos/Recientes ```
 
-### obtener los partidos proximos del jugador (>fecha actual)
+### Obtener los partidos proximos del jugador (>fecha actual)
 
 retorna todos aquellos partidos en donde se cumpla que (fecha partido) >= (fecha actual) , (precision en comprobacion: año, mes, hora y minutos)
 
 @GET ``` api/Jugador/{idJugador}/Partidos/Proximos ```
 
-### obtener los equipos de un jugador
+### Obtener los equipos de un jugador
 
 @GET: ``` api/Jugador/{idJugador}/Equipos ```
 
-### modificar asistencia de un jugador
+### Modificar asistencia de un jugador
 
 @PUT: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia/{estado} ```
 
 donde "estado" corresponde a un entero que indica si el jugador posee una asistencia confirmada, cancelada, etc. Falta consultar con el cliente acerca de que valor tiene realmente cada estado, de momento el servicio asume como Confirmado=1 y Cancelado=0
 
-### modificar asistencia de un jugador incluyendo galletas
+### Modificar asistencia de un jugador incluyendo galletas
 
 similar al metodo anterior pero ademas se puede indicar una cantidad de galletas agregar a la asistencia
 
@@ -190,7 +190,7 @@ Body:
 	}  
 ```
 
-### solicitar ingreso a un equipo
+### Solicitar ingreso a un equipo
 
 @POST ``` api/Equipo/{idEquipo}/SolicitarIngreso/{idJugador} ```
 
