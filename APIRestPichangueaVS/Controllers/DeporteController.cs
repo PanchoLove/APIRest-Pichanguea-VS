@@ -83,7 +83,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una variable con el deporte correspondiente a su nombre
                     var entity = entities.Deporte.Where(e => e.depNombre == nombre).ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y los deportes
                         return Request.CreateResponse(HttpStatusCode.OK, entity);

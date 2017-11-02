@@ -14,11 +14,11 @@ namespace APIRestPichangueaVS.AdditionaModels
         public MensajeEntrada(decimal? idPartido, decimal? idJugador, string contenido)
         {
             this.idJugador = idJugador;
-            this.contenido = contenido;
+            this.contenidoMensaje = contenido;
         }
 
         public Nullable<decimal> idPartido { get; set; }
         public Nullable<decimal> idJugador { get; set; }
-        public String contenido { get; set; }
+        public String contenidoMensaje { get; set; }
     }
 }

@@ -84,7 +84,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una variable con el complejo deportivo correspondiente a su nombre
                     var entity = entities.Complejo_Deportivo.Where(e => e.cmdNombre == nombre).ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y el complejo deportivo
                         return Request.CreateResponse(HttpStatusCode.OK, entity);

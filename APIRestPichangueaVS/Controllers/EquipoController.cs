@@ -89,7 +89,7 @@ namespace APIRestPichangueaVS.Controllers
                     //Se crea una lista con todos los Equipos
                     var entity = entities.Equipo.Where(e => e.equNombre == nombreEquipo).ToList();
 
-                    if (entity != null)
+                    if (entity != null && entity.Count()>0)
                     {
                         //Se retorna el estado OK y la lista de Equipos
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
@@ -278,13 +278,13 @@ namespace APIRestPichangueaVS.Controllers
                                                             }
                                                             ).ToList();
 
-                    if (chat != null)
+                    if (chat != null && chat.Count()>0)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes, o quizas este equipo no tiene mensajes");
                     }
                 }
             }

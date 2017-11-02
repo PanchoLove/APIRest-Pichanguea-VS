@@ -307,7 +307,7 @@ namespace APIRestPichangueaVS.Controllers
                                                             }
                                                             ).ToList();
 
-                    if (chat != null)
+                    if (chat != null && chat.Count()>0)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }

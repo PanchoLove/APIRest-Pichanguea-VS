@@ -7,6 +7,6 @@ namespace APIRestPichangueaVS.AdditionaModels
 {
     public class mensajeSimple
     {
-        public String contenido { get; set; }
+        public String contenidoMensaje { get; set; }
     }
 }

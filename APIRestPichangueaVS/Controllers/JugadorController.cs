@@ -88,7 +88,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //Se crea una variable con el jugador correspondiente a su nombre
                     var entity = entities.Jugador.Where(e => e.jugNombre == nombre).ToList();
-                    if (entity != null)
+                    if (entity != null && entity.Count() > 0)
                     {
                         //Se retorna el estado OK y el jugador
                         return Request.CreateResponse(HttpStatusCode.OK, entity);
@@ -268,9 +268,9 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
 
-                    var invitaciones = entities.Equipo_Invitacion.ToList();
+                    var invitaciones = entities.Equipo_Invitacion.Where(ei => ei.idJugador == idJugador).ToList();
 
-                    if (invitaciones != null)
+                    if (invitaciones != null && invitaciones.Count()>0)
                     {
                         //Se retorna el estado OK y el jugador
                         return Request.CreateResponse(HttpStatusCode.OK, invitaciones);
@@ -278,7 +278,7 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no tiene invitaciones");
                     }
                 }
             }
@@ -362,8 +362,14 @@ namespace APIRestPichangueaVS.Controllers
                                                               galletas= partido_JugadorT.pjuGalleta
                                                           }
                                                           ).ToList();
-
-                    return Request.CreateResponse(HttpStatusCode.OK, consulta);
+                    if(consulta != null)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, consulta);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error al buscar los partidos o el jugador no tiene partidos asociados");
+                    }
                 }
             }
             catch (Exception ex)
@@ -764,7 +770,7 @@ namespace APIRestPichangueaVS.Controllers
                                                                 }
                                                             ).ToList();
 
-                    if (chat != null)
+                    if (chat != null && chat.Count()>0)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }
@@ -861,7 +867,7 @@ namespace APIRestPichangueaVS.Controllers
                                                             }
                                                             ).ToList();
 
-                    if (chat != null)
+                    if (chat != null && chat.Count()>0)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, chat);
                     }
