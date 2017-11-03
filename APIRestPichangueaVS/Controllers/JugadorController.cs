@@ -319,7 +319,9 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-
+        //Funcion para obtener los partidos del jugador
+        /***** MOFIDICAR (aplica la idea antigua)******/
+        //de momento se obtienen los partidos desde la tabla partido_jugador asi que se debe modificar
         [Route("{idJugador:int}/Partidos")]
         public HttpResponseMessage GetPartidos(int idJugador)
         {
@@ -331,22 +333,24 @@ namespace APIRestPichangueaVS.Controllers
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
 
-                    //metodo 2 obtener el cruce de las tablas jugador, partido y partidoJugador
-                    /*   var consulta = (from pj in entities.Partido_Jugador
-                                       join p in entities.Partido on pj.idJugador == p. )*/
+                    //actual: obtener el cruce de las tablas jugador, partido y Partido_Jugador
 
+                    /****************************( MODIFICAR )********************************/
+                    /*esta consulta funciona mediante la idea antigua de obtener solos los jugadores
+                      mediante la tabla Partido_Jugador
+                     */
                     var consulta = entities.Partido_Jugador
-                                                    .Where(pj => pj.idJugador == idJugador)
-                                                    .Join(entities.Partido,
-                                                          pj => pj.idPartido,
-                                                          p => p.idPartido,
-                                                          (partido_JugadorT, partidoT)
+                                                    .Where(pj => pj.idJugador == idJugador) //se filtran con Where los elementos de Partido_jugador con la id del jugador buscado
+                                                    .Join(entities.Partido, //el resultado del Where se cruza con la tabla de Partido 
+                                                          pj => pj.idPartido, //se toma como elemento de comparacion el idPartido de la tabla Partido_jugador
+                                                          p => p.idPartido, //se toma como segundo elemento de comparacion el idPartido de la tabla Partido
+                                                          (partido_JugadorT, partidoT)//el join devuelve los elementos de partido_jugador y partido coincidentes
                                                           => new
                                                           {
                                                               partido = new {
                                                                   idPartido = partidoT.idPartido,
-                                                                  equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partidoT.idEquipo),
-                                                                  tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido),
+                                                                  equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partidoT.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el partido
+                                                                  tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido), //se aplica lo mismo para el tipo_partido
                                                                   parCancha = partidoT.parCancha,
                                                                   parComplejo = partidoT.parComplejo,
                                                                   parCreacion = partidoT.parCreacion,
@@ -358,11 +362,22 @@ namespace APIRestPichangueaVS.Controllers
                                                                   parUbicacion = partidoT.parUbicacion
                                                               }
                                                               ,
-                                                              asistencia = partido_JugadorT.pjuEstado,
-                                                              galletas= partido_JugadorT.pjuGalleta
+                                                              asistencia = partido_JugadorT.pjuEstado, //adicionalmente al objeto partido se agrega el valor de estado de partido_jugador (YA SABEMOS QUE AL PARECER NO REPRESENTA ASISTENCIA)
+                                                              galletas= partido_JugadorT.pjuGalleta //adicionalmente tambien se incluye la cantidad de galletas que agrego el jugador
                                                           }
                                                           ).ToList();
-                    if(consulta != null)
+
+                    /*
+                      Para la nueva consulta una forma podria ser primero se obtener los elementos de la tabla [equipo_jugador]
+                      para obtener solo aquellos donde este el idJugador y luego hacer el cruce con las tablas [Equipo] y [Partido]
+                      para obtener los partidos de los equipos que le pertenecen al jugador, la operacion deberia resultar en algo como esto:
+
+                         [Equipo_jugador](filtrados por idJugador) x [Equipo] x [Partido]
+
+                     
+                     */
+
+                    if (consulta != null)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, consulta);
                     }
@@ -379,6 +394,16 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+        //funcion para obtener un partido especifico de la lista de partidos del jugador
+        /*** REVISAR*******/
+        /*cambian algunos detalles en las condiciones de comprobacion
+          pero lo demas deberia seguir siendo valido ya que esta consulta
+          no depende de la tabla partido_jugador (solo la usa para verificar
+          si de verdad el partido esta vinculado al jugador y es esa parte la conflictiva
+          o que se deberia quitar)
+             
+         */
         [Route("{idJugador:int}/Partidos/{idPartido:int}")]
         public HttpResponseMessage GetPartidos(int idJugador, int idPartido)
         {
@@ -393,6 +418,12 @@ namespace APIRestPichangueaVS.Controllers
                     //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempos
                     var intermedio = entities.Partido_Jugador.Where(pj => pj.idJugador == idJugador && pj.idPartido == idPartido);
 
+                    /*MODIFICAR O REVISAR 
+                     (esta condicion ya no deberia ir o bien se deberia modificar ya que 
+                      si el jugador no esta confirmado o en espera no aparecera en la tabla
+                      Partido_Jugador sin embargo eso no quiere decir que no sea su partido
+                     ) 
+                     */
                     if (intermedio == null)
                     {
                             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe o no posee partidos");          
@@ -400,8 +431,10 @@ namespace APIRestPichangueaVS.Controllers
                     else
                     {
 
-                        //si efectivamente el partido esta vinculado al jugador retornarlo
-                        var partido = entities.Partido.FirstOrDefault(p=> p.idPartido == idPartido);
+                        /*se formatea el json de respuesta manualmente aunque un new deberia tener el mismo efecto
+                        en el momento no se me ocurrio que podia usar un "new{}" fuera del join xD*/
+
+                        var partido = entities.Partido.FirstOrDefault(p=> p.idPartido == idPartido);//se obtiene el partido
                         var pj = intermedio.ToList();
 
                         PartidoCompuesto pc = new PartidoCompuesto();
@@ -431,6 +464,19 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+        //funcion para obtener los jugadores confirmados para un partido
+        /***MODIFICAR****/
+        /**la funcion fue provisoria, de hecho no retorna nada si es que se llama al padre:
+         * "api/{idJugador:int}/Partidos/{idPartido:int}/Jugadores/"
+         * 
+         * idealmente en esta funcion deberian incluirse todos los jugadores de un partido
+         * con un valor que inddique si esta confirmado, en lista de espera o solo dentro del
+         * equipo del partido ademas de las galletas
+         * 
+         * el cruce de tablas para esta consulta puede ser engorroso xD, cuidado
+         * 
+         * **/
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Jugadores/Confirmados")]
         public HttpResponseMessage GetJugadoresPartido(int idJugador, int idPartido)
         {
@@ -442,7 +488,7 @@ namespace APIRestPichangueaVS.Controllers
                 {
                     //obtener la lista de partidos pertenecientes al jugador
 
-                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempos
+                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempo
                     var intermedio = entities.Partido_Jugador.Where(pj => pj.idJugador == idJugador && pj.idPartido == idPartido);
 
                     if (intermedio == null)
@@ -451,33 +497,18 @@ namespace APIRestPichangueaVS.Controllers
                     }
                     else
                     {
-                        /* var jugadoresConfirmados = entities.Jugador.Join(entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido),
-                                                                          j => idJugador,
-                                                                          pj => idJugador,
-                                                                          (jug, parJug) => jug
-                                                                           );*/
 
+                        /**MODIFICARR*/
+                        /*
+                         esta consulta funciona bajo la idea antigua, solo busca los jugadores mediante
+                         la tabla Partido_Jugador
+                         */
                         var confirmados = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido)
                                                                   .Join(entities.Jugador,
                                                                        pj => pj.idJugador,
                                                                         j => j.idJugador,
                                                                         (parJug, jug) => jug
                                                                         );
-
-                      /*  var equipo = entities.Equipo.FirstOrDefault(e=> e.idEquipo == 
-                                                entities.Partido.FirstOrDefault(p=> p.idPartido == idPartido).idEquipo);
-
-                        var otrosJugadores = entities.Equipo_Jugador.Where(e => equipo.idEquipo == e.idEquipo)
-                                                                            .Join(entities.Jugador,
-                                                                                  ej => ej.idJugador,
-                                                                                  j => j.idJugador,
-                                                                                  (ejug,jug)=>jug);
-
-
-                        var jugadores = new {
-                                                jugadoresConfirmados = jugadoresConfirmados,
-                            //otrosJugadores = otrosJugadores
-                                            };*/
 
 
                         return Request.CreateResponse(HttpStatusCode.OK, confirmados.ToList());
@@ -492,8 +523,8 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-
-
+        //funcion para modificar la asistencia de un jugador a un partido
+        /****  MODIFICAR O QUITAR (funciona bajo la idea antigua y solamente modifica el estado)****/
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/{estado:int}")]
         public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado)
         {
@@ -517,16 +548,18 @@ namespace APIRestPichangueaVS.Controllers
                     {
                         //obtener la cantidad de asistentes y cupos disponibles
                         var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
-                        Nullable<decimal> cuposOcupados = asistentes.Count();
+                        Nullable<decimal> cuposOcupados = asistentes.Count(); //contar cupos ocupados (puede seguir siendo valida)
 
+                        //sumar las galletas de cada jugador al contador de cupos ocupados
                         foreach (Partido_Jugador pj in asistentes)
                         {
                             if (pj.pjuGalleta > 0)
                             {
-                                cuposOcupados = cuposOcupados + pj.pjuGalleta;
+                                cuposOcupados = cuposOcupados + pj.pjuGalleta;  
                             }
                         }
 
+                        //obtener el tipoPartido del partido para determinar la cantidad de participantes maximos
                         var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
                                                            .Join(entities.Tipo_Partido,
                                                                 p => p.idTipoPartido,
@@ -537,9 +570,12 @@ namespace APIRestPichangueaVS.Controllers
                         {
                             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
                         }
-                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores;
-                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados;
 
+                        
+                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //establecer cupos maximos
+                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinar cupos disponibles
+
+                        //modificar el estado si es que quedan cupos disponibles (idea antigua)
                         if (cuposDisponibles > 0)
                         {
                             vinculo.pjuEstado = estado;
@@ -573,6 +609,11 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
+        //funcion para modificar la cantidad de galletas de un jugador (modifica el valor de "galleta")
+        /*se inlcluyen 2 direcciones para que se pueda llamar como 
+         * Galletas/{cantidad} o Galletas?cantidad={cantidad}
+        */
+
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/")]
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/{cantidad:int}")]
         public HttpResponseMessage PutGalletas(int idJugador, int idPartido, int cantidad)
@@ -597,7 +638,8 @@ namespace APIRestPichangueaVS.Controllers
                         var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
                         Nullable<decimal> cuposOcupados = asistentes.Count();
 
-                        foreach (Partido_Jugador pj in asistentes)
+                    //sumar las galletas de cada jugador al contador de cupos ocupados
+                    foreach (Partido_Jugador pj in asistentes)
                         {
                             if (pj.pjuGalleta > 0)
                             {
@@ -605,7 +647,8 @@ namespace APIRestPichangueaVS.Controllers
                             }
                         }
 
-                        var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
+                    //obtener el tipoPartido del partido para determinar la cantidad de participantes maximos
+                    var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
                                                            .Join(entities.Tipo_Partido,
                                                                 p => p.idTipoPartido,
                                                                 tp => tp.idTipoPartido,
@@ -615,10 +658,15 @@ namespace APIRestPichangueaVS.Controllers
                         {
                             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
                         }
-                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores;
-                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados;
 
-                        if (cuposDisponibles > cantidad)
+
+
+                    Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //establecer cupos maximos
+                    Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinar cupos disponibles
+
+                    //modificar el estado si es que quedan cupos disponibles tanto para el jugador como las galletas 
+                   // (idea antigua no se debe modificar el estado si no crear un nuevo patido_jugador)
+                    if (cuposDisponibles > cantidad)
                         {
                             vinculo.pjuGalleta = cantidad;
                             entities.SaveChanges();
@@ -641,6 +689,10 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+        //funcion para agregar mas galletas al valor "galleta" ya existente
+        //hace galleta = galleta + cantidad
+        //MODIFICAR O QUITAR 
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/")]
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/{cantidad:int}")]
         public HttpResponseMessage PostGalletas(int idJugador, int idPartido, int cantidad)
@@ -666,6 +718,7 @@ namespace APIRestPichangueaVS.Controllers
                     var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
                     Nullable<decimal> cuposOcupados = asistentes.Count();
 
+                    //sumar al contador de cupos ocupados las galletas de los asistentes
                     foreach (Partido_Jugador pj in asistentes)
                     {
                         if (pj.pjuGalleta > 0)
@@ -673,7 +726,7 @@ namespace APIRestPichangueaVS.Controllers
                             cuposOcupados = cuposOcupados + pj.pjuGalleta;
                         }
                     }
-
+                    //obtener el tipoPartido del partido para obtener la cantidad maxima de cupos
                     var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
                                                        .Join(entities.Tipo_Partido,
                                                             p => p.idTipoPartido,
@@ -684,9 +737,11 @@ namespace APIRestPichangueaVS.Controllers
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
                     }
-                    Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores;
-                    Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados;
+                    
+                    Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //determinando cupos maximos
+                    Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinando cupos disponibles
 
+                    //si alcanzan cupos para las nuevas galletas agregarlas
                     if (cuposDisponibles > cantidad)
                     {
                         vinculo.pjuGalleta = vinculo.pjuGalleta + cantidad;
@@ -710,7 +765,10 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-        //Funcion que confirma asistencia y galletas al mismo tiempo
+        //Funcion que confirma asistencia y agrega galletas al mismo tiempo
+        /***MODIFICAR (el acto de confirmar asistencia ya no deberia cambiar el estado si no crear
+         * un vinculo del tipo Partido_Jugador
+         * )**/
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/")]
         public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado, int galletas)
         {
@@ -737,6 +795,7 @@ namespace APIRestPichangueaVS.Controllers
                         var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
                         Nullable<decimal> cuposOcupados = asistentes.Count();
 
+                        //sumar al contador de cupos ocupados las galletas de los asistentes
                         foreach (Partido_Jugador pj in asistentes)
                         {
                             if (pj.pjuGalleta > 0)
@@ -745,6 +804,7 @@ namespace APIRestPichangueaVS.Controllers
                             }
                         }
 
+                        //obtener el tipoPartido del partido para obtener la cantidad maxima de cupos
                         var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
                                                            .Join(entities.Tipo_Partido,
                                                                 p => p.idTipoPartido,
@@ -755,9 +815,10 @@ namespace APIRestPichangueaVS.Controllers
                         {
                             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
                         }
-                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores;
-                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados;
+                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //determinando cupos maximos
+                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinando cupos disponibles
 
+                        //si alcanzan cupos para el jugador + sus galletas confirmar asistencia
                         if (cuposDisponibles > galletas+1)
                         {
                             vinculo.pjuEstado = estado;
@@ -794,6 +855,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+        //funcion para obtener los mensaje del chat de un partido
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]
         public HttpResponseMessage GetChat(int idPartido, int idJugador)
         {
@@ -849,6 +911,7 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+        //funcion para enviar un mensaje al chat de un partido
        [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]
         public HttpResponseMessage PostChat([FromBody]mensajeSimple mensaje, int idPartido, int idJugador)
         {
@@ -890,7 +953,7 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-
+        //funcion para obtener los mensaje del chat de un equipo (creo que la base de datos no tiene)
         [Route("{idJugador:int}/Equipos/{idEquipo:int}/Chat/")]
         public HttpResponseMessage GetEquipoChat(int idEquipo, int idJugador)
         {
@@ -946,6 +1009,8 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
+
+        //funcion para enviar un mensaje chat de un equipo
         [Route("{idJugador:int}/Equipos/{idEquipo:int}/Chat/")]
         public HttpResponseMessage PostEquipoChat([FromBody]mensajeSimple mensaje, int idEquipo, int idJugador)
         {
