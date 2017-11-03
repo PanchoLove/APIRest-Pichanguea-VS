@@ -513,7 +513,7 @@ namespace APIRestPichangueaVS.Controllers
                     }
 
                     //caso 1: confirmar asistencia
-                    if (vinculo.pjuEstado == estadoConfirmado)
+                    if (estado == estadoConfirmado)
                     {
                         //obtener la cantidad de asistentes y cupos disponibles
                         var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
@@ -562,7 +562,7 @@ namespace APIRestPichangueaVS.Controllers
                         }
                     }
                     //caso 3: se ingresa in valor de estado de asistencia incorrecto (ni 0 ni 1)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "La asistencia del jugador ya se encontraba cancelada o nunca fue creada");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "El estado ingresado no es valido");
                 }
             }
             catch (Exception ex)
