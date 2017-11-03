@@ -710,7 +710,7 @@ namespace APIRestPichangueaVS.Controllers
         }
 
 
-
+        //Funcion que confirma asistencia y galletas al mismo tiempo
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/")]
         public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado, int galletas)
         {
