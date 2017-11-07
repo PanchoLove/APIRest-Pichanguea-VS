@@ -228,7 +228,7 @@ namespace APIRestPichangueaVS.Controllers
                     if (entity == null)
                     {
                         //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Equipo con ID: " + id.ToString() + " no existe, no es posible actualizar");
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Equipo con ID: " + id.ToString() + " no existe, no es posible borrar");
 
                     }
                     else
@@ -238,6 +238,43 @@ namespace APIRestPichangueaVS.Controllers
                         entities.SaveChanges();
                         //Se retorna el estaado OK
                         return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+
+        //Funcion que retorna todos los jugadores de un Equipo
+        [Route("{idEquipo:int}/Jugadores")]
+        public HttpResponseMessage GetJugEqui(int idEquipo)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con los jugadores del equipo correspondiente a la ID
+                    var entity = entities.Equipo_Jugador.Where(ej => ej.idEquipo == idEquipo).Join(
+                                                                                    entities.Jugador,
+                                                                                    ej => ej.idJugador,
+                                                                                    j => j.idJugador,
+                                                                                    (EquiJuga, Jug) => Jug)
+                                                                                    .ToList();
+                    if (entity == null || entity.Count() <= 0)
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Equipo con ID: " + idEquipo.ToString() + " no tiene jugadores");
+
+                    }
+                    else
+                    {
+                        //Se retorna el estado OK y la lista de jugadores
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
                     }
                 }
             }

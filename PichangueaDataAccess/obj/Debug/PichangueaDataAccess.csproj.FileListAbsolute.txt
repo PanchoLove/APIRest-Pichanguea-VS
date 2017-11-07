@@ -32,6 +32,5 @@ C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\P
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.resources.dll
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\bin\Debug\es\EntityFramework.SqlServer.resources.dll
-C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.csprojResolveAssemblyReference.cache
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.dll
 C:\Users\Francisco\Documents\Visual Studio 2015\Projects\APIRest-Pichanguea-VS\PichangueaDataAccess\obj\Debug\PichangueaDataAccess.pdb

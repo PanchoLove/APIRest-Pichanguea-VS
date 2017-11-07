@@ -302,7 +302,7 @@ namespace APIRestPichangueaVS.Controllers
 
                     if (invitacion != null)
                     {
-                        //Se retorna el estado OK y el jugador
+                        //Se retorna el estado OK y la invitacion
                         return Request.CreateResponse(HttpStatusCode.OK, invitacion);
                     }
                     else
@@ -319,9 +319,9 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-        //Funcion para obtener los partidos del jugador
-        /***** MOFIDICAR (aplica la idea antigua)******/
-        //de momento se obtienen los partidos desde la tabla partido_jugador asi que se debe modificar
+
+
+        //Funcion para obtener todos los partidos del jugador
         [Route("{idJugador:int}/Partidos")]
         public HttpResponseMessage GetPartidos(int idJugador)
         {
@@ -332,54 +332,42 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
+                    var partidos = 
+                        entities.Equipo_Jugador
+                        .Where(ej => ej.idJugador == idJugador) //se filtran con Where los elementos de Equipo_Jugador con la id del jugador buscado
+                        .Join(entities.Partido
+                        .Where(p => p.parFecha.Value >= DateTime.Now), //el resultado del Where se cruza con la tabla de Partido 
+                                ej => ej.idEquipo, //se toma como elemento de comparacion el idEquipo de la tabla Equipo_Jugador
+                                p => p.idEquipo, //se toma como segundo elemento de comparacion el idEquipo de la tabla Partido
+                                (EquiJug, partidoT)//el join devuelve los elementos de Equipo_Jugador y partido coincidentes
+                                => new
+                                {
+                                    partido = new
+                                    {
+                                        idPartido = partidoT.idPartido,
+                                        equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partidoT.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
+                                        tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido), //se aplica lo mismo para el tipo_partido
+                                        parCancha = partidoT.parCancha,
+                                        parComplejo = partidoT.parComplejo,
+                                        parCreacion = partidoT.parCreacion,
+                                        parEstado = partidoT.parEstado,
+                                        parFecha = new
+                                        {
+                                            Año = partidoT.parFecha.Value.Year,
+                                            Mes = partidoT.parFecha.Value.Month,
+                                            Dia = partidoT.parFecha.Value.Day
+                                        },
+                                        parGeoReferencia = partidoT.parGeoReferencia,
+                                        parHora = partidoT.parHora,
+                                        parRival = partidoT.parRival,
+                                        parUbicacion = partidoT.parUbicacion
+                                    }
+                                }
+                                ).ToList();
 
-                    //actual: obtener el cruce de las tablas jugador, partido y Partido_Jugador
-
-                    /****************************( MODIFICAR )********************************/
-                    /*esta consulta funciona mediante la idea antigua de obtener solos los jugadores
-                      mediante la tabla Partido_Jugador
-                     */
-                    var consulta = entities.Partido_Jugador
-                                                    .Where(pj => pj.idJugador == idJugador) //se filtran con Where los elementos de Partido_jugador con la id del jugador buscado
-                                                    .Join(entities.Partido, //el resultado del Where se cruza con la tabla de Partido 
-                                                          pj => pj.idPartido, //se toma como elemento de comparacion el idPartido de la tabla Partido_jugador
-                                                          p => p.idPartido, //se toma como segundo elemento de comparacion el idPartido de la tabla Partido
-                                                          (partido_JugadorT, partidoT)//el join devuelve los elementos de partido_jugador y partido coincidentes
-                                                          => new
-                                                          {
-                                                              partido = new {
-                                                                  idPartido = partidoT.idPartido,
-                                                                  equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partidoT.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el partido
-                                                                  tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido), //se aplica lo mismo para el tipo_partido
-                                                                  parCancha = partidoT.parCancha,
-                                                                  parComplejo = partidoT.parComplejo,
-                                                                  parCreacion = partidoT.parCreacion,
-                                                                  parEstado = partidoT.parEstado,
-                                                                  parFecha = partidoT.parFecha,
-                                                                  parGeoReferencia = partidoT.parGeoReferencia,
-                                                                  parHora = partidoT.parHora,
-                                                                  parRival = partidoT.parRival,
-                                                                  parUbicacion = partidoT.parUbicacion
-                                                              }
-                                                              ,
-                                                              asistencia = partido_JugadorT.pjuEstado, //adicionalmente al objeto partido se agrega el valor de estado de partido_jugador (YA SABEMOS QUE AL PARECER NO REPRESENTA ASISTENCIA)
-                                                              galletas= partido_JugadorT.pjuGalleta //adicionalmente tambien se incluye la cantidad de galletas que agrego el jugador
-                                                          }
-                                                          ).ToList();
-
-                    /*
-                      Para la nueva consulta una forma podria ser primero se obtener los elementos de la tabla [equipo_jugador]
-                      para obtener solo aquellos donde este el idJugador y luego hacer el cruce con las tablas [Equipo] y [Partido]
-                      para obtener los partidos de los equipos que le pertenecen al jugador, la operacion deberia resultar en algo como esto:
-
-                         [Equipo_jugador](filtrados por idJugador) x [Equipo] x [Partido]
-
-                     
-                     */
-
-                    if (consulta != null)
+                    if (partidos != null && partidos.Count() > 0)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, consulta);
+                        return Request.CreateResponse(HttpStatusCode.OK, partidos);
                     }
                     else
                     {
@@ -394,67 +382,71 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-
-        //funcion para obtener un partido especifico de la lista de partidos del jugador
-        /*** REVISAR*******/
-        /*cambian algunos detalles en las condiciones de comprobacion
-          pero lo demas deberia seguir siendo valido ya que esta consulta
-          no depende de la tabla partido_jugador (solo la usa para verificar
-          si de verdad el partido esta vinculado al jugador y es esa parte la conflictiva
-          o que se deberia quitar)
-             
-         */
-        [Route("{idJugador:int}/Partidos/{idPartido:int}")]
-        public HttpResponseMessage GetPartidos(int idJugador, int idPartido)
+        //Funcion para obtener todos los partidos del jugador
+        [Route("{idJugador:int}/Partidos/NoConfirmados")]
+        public HttpResponseMessage GetPartidosNC(int idJugador)
         {
 
             try
             {
+
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //obtener la lista de partidos pertenecientes al jugador
+                    var partidos = entities.Equipo_Jugador
+                                                    .Where(ej => ej.idJugador == idJugador) //se filtran con Where los elementos de Equipo_Jugador con la id del jugador buscado
+                                                    .Join(entities.Partido
+                                                    .Where(p => p.parFecha.Value >= DateTime.Now), //el resultado del Where se cruza con la tabla de Partido 
+                                                          ej => ej.idEquipo, //se toma como elemento de comparacion el idEquipo de la tabla Equipo_Jugador
+                                                          p => p.idEquipo, //se toma como segundo elemento de comparacion el idEquipo de la tabla Partido
+                                                          (EquiJug, partidoT)//el join devuelve los elementos de Equipo_Jugador y partido coincidentes
+                                                          => partidoT).ToList();
 
-                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempos
-                    var intermedio = entities.Partido_Jugador.Where(pj => pj.idJugador == idJugador && pj.idPartido == idPartido);
+                    var partidosConfirmados = entities.Partido_Jugador
+                                                     .Where(pj => pj.idJugador == idJugador)
+                                                     .ToList();
 
-                    /*MODIFICAR O REVISAR 
-                     (esta condicion ya no deberia ir o bien se deberia modificar ya que 
-                      si el jugador no esta confirmado o en espera no aparecera en la tabla
-                      Partido_Jugador sin embargo eso no quiere decir que no sea su partido
-                     ) 
-                     */
-                    if (intermedio == null)
+                    var partidosNOconfirmados = partidos.Where(p => !partidosConfirmados.
+                                                                    Select(pj => pj.idPartido)
+                                                                    .Contains(p.idPartido));
+
+                    var PNC = 
+                        partidosNOconfirmados
+                        .Join(partidosNOconfirmados,
+                        pnc1 => pnc1.idPartido,
+                        pnc2 => pnc2.idPartido,
+                        (p1,p2) => new
+                        {
+                            partido = new
+                            {
+                                idPartido = p2.idPartido,
+                                equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == p2.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
+                                tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == p2.idTipoPartido), //se aplica lo mismo para el tipo_partido
+                                parCancha = p2.parCancha,
+                                parComplejo = p2.parComplejo,
+                                parCreacion = p2.parCreacion,
+                                parEstado = p2.parEstado,
+                                parFecha = new
+                                {
+                                    Año = p2.parFecha.Value.Year,
+                                    Mes = p2.parFecha.Value.Month,
+                                    Dia = p2.parFecha.Value.Day
+                                },
+                                parGeoReferencia = p2.parGeoReferencia,
+                                parHora = p2.parHora,
+                                parRival = p2.parRival,
+                                parUbicacion = p2.parUbicacion
+                            }
+                        }).ToList();
+
+                    if (PNC != null && PNC.Count() > 0)
                     {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Jugador con ID: " + idJugador + " no existe o no posee partidos");          
+                        return Request.CreateResponse(HttpStatusCode.OK, PNC);
                     }
                     else
                     {
-
-                        /*se formatea el json de respuesta manualmente aunque un new deberia tener el mismo efecto
-                        en el momento no se me ocurrio que podia usar un "new{}" fuera del join xD*/
-
-                        var partido = entities.Partido.FirstOrDefault(p=> p.idPartido == idPartido);//se obtiene el partido
-                        var pj = intermedio.ToList();
-
-                        PartidoCompuesto pc = new PartidoCompuesto();
-                        pc.idPartido = partido.idPartido;
-                        pc.equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partido.idEquipo);
-                        pc.Tipo_Partido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partido.idTipoPartido);
-                        pc.parCancha = partido.parCancha;
-                        pc.parComplejo = partido.parComplejo;
-                        pc.parCreacion = partido.parCreacion;
-                        pc.parEstado = partido.parEstado;
-                        pc.parFecha = partido.parFecha;
-                        pc.parGeoReferencia = partido.parGeoReferencia;
-                        pc.parHora = partido.parHora;
-                        pc.parRival = partido.parRival;
-                        pc.parUbicacion = partido.parUbicacion;
-
-                        //Se retorna el estado NotFound y un string que indica el error
-                        return Request.CreateResponse(HttpStatusCode.OK, new PartidoInformacionExtra(pc, pj[0].pjuEstado, pj[0].pjuGalleta));
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error al buscar los partidos o el jugador no tiene partidos no confirmados asociados");
                     }
-
                 }
             }
             catch (Exception ex)
@@ -463,6 +455,74 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+
+        //Funcion para obtener todos los partidos del jugador
+        [Route("{idJugador:int}/Partidos/Confirmados")]
+        public HttpResponseMessage GetPartidosC(int idJugador)
+        {
+
+            try
+            {
+
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    
+                    var partidosConfirmados = 
+                        entities.Partido_Jugador
+                        .Where(pj => pj.idJugador == idJugador)
+                            .Join(entities.Partido.Where(p => p.parFecha.Value >= DateTime.Now),
+                            pj => pj.idPartido,
+                            p => p.idPartido,
+                            (ParJug,Par) => new
+                            {
+                                partido = new
+                                {
+                                    idPartido = Par.idPartido,
+                                    equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == Par.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
+                                    tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == Par.idTipoPartido), //se aplica lo mismo para el tipo_partido
+                                    parCancha = Par.parCancha,
+                                    parComplejo = Par.parComplejo,
+                                    parCreacion = Par.parCreacion,
+                                    parEstado = Par.parEstado,
+                                    parFecha = new
+                                    {
+                                        Año = Par.parFecha.Value.Year,
+                                        Mes = Par.parFecha.Value.Month,
+                                        Dia = Par.parFecha.Value.Day
+                                    },
+                                    parGeoReferencia = Par.parGeoReferencia,
+                                    parHora = Par.parHora,
+                                    parRival = Par.parRival,
+                                    parUbicacion = Par.parUbicacion
+                                },
+                                asistencia = ParJug.pjuEstado,
+                                galletas = ParJug.pjuGalleta
+                            })
+                        .ToList();
+
+                   
+
+                    if (partidosConfirmados != null && partidosConfirmados.Count() > 0)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, partidosConfirmados);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error al buscar los partidos o el jugador no tiene partidos confirmados asociados");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+
+        
 
 
         //funcion para obtener los jugadores confirmados para un partido

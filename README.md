@@ -15,9 +15,9 @@ resumen:
     -ver informacion de un partido
     -ver informacion de un equipo
     -ver informacion de un jugador
-    -obtener los partidos de un jugador
-    -obtener los partidos recientes del jugador (>año actual)
-    -obtener los partidos proximos del jugador (>fecha actual)
+    -obtener todos los partidos de un jugador desde la fecha actual (confirmados o no confirmados)
+    -obtener los partidos confirmados del jugador desde la fecha actual
+    -obtener los partidos NO confirmados del jugador desde la fecha actual
     -obtener los equipos de un jugador
     -modificar asistencia de un jugador
     -modificar asistencia de un jugador incluyendo galletas
@@ -84,23 +84,34 @@ ejemplo2: api/Partido/1
 @GET: ``` api/Jugador/{id} ```
 
 
-### Obtener los partidos de un jugador
+### Obtener todos los partidos de un jugador desde la fecha actual hacia adelante
+
+retorna todos los partidos del jugador, sean confirmados o no confirmados
 
 @GET: ``` api/Jugador/{idJugador}/Partidos ```
 
-ejemplo: api/Jugador/1/Partidos
+ejemplo: api/Jugador/10003/Partidos
 
-### Obtener los partidos recientes del jugador (>año actual)
+### Obtener los partidos confirmados de un jugador desde la fecha actual hacia adelante
 
-retorna todos aquellos partidos del jugador en donde se cumpla que (año partido) >= (año actual) 
+retorna todos aquellos partidos del jugador en donde se ha realizado una acción (se ha confirmado o negado la asistencia) 
 
-@GET ``` api/Jugador/{idJugador}/Partidos/Recientes ```
+@GET ``` api/Jugador/{idJugador}/Partidos/Confirmados ```
 
-### Obtener los partidos proximos del jugador (>fecha actual)
+ejemplo: api/Jugador/10003/Partidos/Confirmados
 
-retorna todos aquellos partidos en donde se cumpla que (fecha partido) >= (fecha actual) , (precision en comprobacion: año, mes, hora y minutos)
+### Obtener los partidos NO confirmados de un jugador desde la fecha actual hacia adelante
 
-@GET ``` api/Jugador/{idJugador}/Partidos/Proximos ```
+retorna todos aquellos partidos del jugador en donde NO se ha realizado una acción (NO se ha confirmado ni negado la asistencia) 
+
+@GET ``` api/Jugador/{idJugador}/Partidos/NoConfirmados ```
+
+ejemplo: api/Jugador/10003/Partidos/Confirmados
+
+###---------------------------------------------
+### OJO, PARA LOS ULTIMOS 3 MÉTODOS SOLO HACE ALGO CON LA ID "10003", YA QUE CON ELLA SE CREARON PARTIDOS FICTICIOSOS, PARA LOS OTROS JUGADORES NO EXISTEN PARTIDOS FUTUROS.
+###---------------------------------------------
+
 
 ### Obtener los equipos de un jugador
 
@@ -110,7 +121,7 @@ retorna todos aquellos partidos en donde se cumpla que (fecha partido) >= (fecha
 
 @PUT: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia/{estado} ```
 
-donde "estado" corresponde a un entero que indica si el jugador posee una asistencia confirmada, cancelada, etc. Falta consultar con el cliente acerca de que valor tiene realmente cada estado, de momento el servicio asume como Confirmado=1 y Cancelado=0
+
 
 ### Modificar asistencia de un jugador incluyendo galletas
 
