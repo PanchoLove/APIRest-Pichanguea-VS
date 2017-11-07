@@ -358,7 +358,11 @@ namespace APIRestPichangueaVS.Controllers
                                             Dia = partidoT.parFecha.Value.Day
                                         },
                                         parGeoReferencia = partidoT.parGeoReferencia,
-                                        parHora = partidoT.parHora,
+                                        parHora = new
+                                        {
+                                            Hora = partidoT.parHora.Value.Hours,
+                                            Minutos = partidoT.parHora.Value.Minutes
+                                        },
                                         parRival = partidoT.parRival,
                                         parUbicacion = partidoT.parUbicacion
                                     }
@@ -433,7 +437,11 @@ namespace APIRestPichangueaVS.Controllers
                                     Dia = p2.parFecha.Value.Day
                                 },
                                 parGeoReferencia = p2.parGeoReferencia,
-                                parHora = p2.parHora,
+                                parHora = new
+                                {
+                                    Hora = p2.parHora.Value.Hours,
+                                    Minutos = p2.parHora.Value.Minutes
+                                },
                                 parRival = p2.parRival,
                                 parUbicacion = p2.parUbicacion
                             }
@@ -493,7 +501,11 @@ namespace APIRestPichangueaVS.Controllers
                                         Dia = Par.parFecha.Value.Day
                                     },
                                     parGeoReferencia = Par.parGeoReferencia,
-                                    parHora = Par.parHora,
+                                    parHora = new
+                                    {
+                                        Hora = Par.parHora.Value.Hours,
+                                        Minutos = Par.parHora.Value.Minutes
+                                    },
                                     parRival = Par.parRival,
                                     parUbicacion = Par.parUbicacion
                                 },
@@ -582,6 +594,8 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+
 
         //funcion para modificar la asistencia de un jugador a un partido
         /****  MODIFICAR O QUITAR (funciona bajo la idea antigua y solamente modifica el estado)****/

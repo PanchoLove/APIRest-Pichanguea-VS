@@ -106,11 +106,35 @@ retorna todos aquellos partidos del jugador en donde NO se ha realizado una acci
 
 @GET ``` api/Jugador/{idJugador}/Partidos/NoConfirmados ```
 
-ejemplo: api/Jugador/10003/Partidos/Confirmados
+ejemplo: api/Jugador/10003/Partidos/NoConfirmados
 
 ###---------------------------------------------
 ### OJO, PARA LOS ULTIMOS 3 MÉTODOS SOLO HACE ALGO CON LA ID "10003", YA QUE CON ELLA SE CREARON PARTIDOS FICTICIOSOS, PARA LOS OTROS JUGADORES NO EXISTEN PARTIDOS FUTUROS.
 ###---------------------------------------------
+
+### Obtener todos los todos los jugadores de un partido 
+
+retorna todos los jugadores de un partido, esten confirmados o no confirmados
+
+@GET: ``` api/Partido/{idPartido}/Jugadores ```
+
+ejemplo: api/Partido/219/Jugadores
+
+### Obtener los todos los jugadores confirmados de un partido
+
+retorna todos aquellos jugadores del partido que hayan realizado una acción (se ha confirmado o negado la asistencia) 
+
+@GET ``` api/Partido/{idPartido}/Jugadores/Confirmados ```
+
+ejemplo: api/Partido/219/Jugadores/Confirmados
+
+### Obtener los todos los jugadores NO confirmados de un partido
+
+retorna todos aquellos jugadores del partido que NO hayan realizado una acción (NO se ha confirmado ni negado la asistencia) 
+
+@GET ``` api/Partido/{idPartido}/Jugadores/NoConfirmados ```
+
+ejemplo: api/Partido/219/Jugadores/NoConfirmados
 
 
 ### Obtener los equipos de un jugador

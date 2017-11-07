@@ -325,6 +325,166 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
+        //funcion para obtener los jugadores que pueden asistir a un partido
+        [Route("{idPartido:int}/Jugadores")]
+        public HttpResponseMessage GetJugadoresPartido(int idPartido)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    
+                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempo
+                    var intermedio = entities.Partido
+                                    .Where(p => p.idPartido == idPartido)
+                                    .Join(entities.Equipo_Jugador,
+                                    p => p.idEquipo,
+                                    ej => ej.idEquipo,
+                                    (par,equijug) => equijug).ToList();
+
+                    var jugadores = intermedio
+                                    .Join(entities.Jugador,
+                                    i => i.idJugador,
+                                    j => j.idJugador,
+                                    (inter, jug) => jug).ToList();
+
+                    if (jugadores == null || jugadores.Count() <= 0)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, jugadores);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        //funcion para obtener los jugadores que pueden asistir a un partido
+        [Route("{idPartido:int}/Jugadores/Confirmados")]
+        public HttpResponseMessage GetJugadoresPartidoConf(int idPartido)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempo
+
+                    var jugadores = entities.Partido_Jugador
+                                    .Where(pj => pj.idPartido == idPartido)
+                                    .Join(entities.Jugador,
+                                    pj => pj.idJugador,
+                                    j => j.idJugador,
+                                    (inter, jug) => new
+                                                {
+                                                    jugador = new
+                                                    {
+                                                        idJugador = jug.idJugador,
+                                                        jugApodo = jug.jugApodo,
+                                                        jugCelular = jug.jugCelular,
+                                                        jugCreacion = jug.jugCreacion,
+                                                        jugEmail = jug.jugEmail,
+                                                        jugFono = jug.jugFono,
+                                                        jugFoto = jug.jugFoto,
+                                                        jugMaterno = jug.jugMaterno,
+                                                        jugNombre = jug.jugNombre,
+                                                        jugPassword = jug.jugPassword,
+                                                        jugPaterno = jug.jugPaterno,
+                                                        jugRut = jug.jugRut,
+                                                        jugRutDv = jug.jugRutDv,
+                                                        jugUsername = jug.jugUsername,
+                                                    },
+                                                    fechaConfirmacion = inter.pjuCreacion,
+                                                    asistencia = inter.pjuEstado,
+                                                    galletas = inter.pjuGalleta
+                                    }
+                                                ).ToList();
+
+                    if (jugadores == null || jugadores.Count() <= 0)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, jugadores.OrderBy(j => j.fechaConfirmacion));
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        //funcion para obtener los jugadores que pueden asistir a un partido
+        [Route("{idPartido:int}/Jugadores/NoConfirmados")]
+        public HttpResponseMessage GetJugadoresPartidoNoConf(int idPartido)
+        {
+
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    //obtener de la tabla intermedia entre jugador y partido la fila donde se encuentra la id del jugador y la id del partido al mismo tiempo
+
+                    var intermedio = entities.Partido
+                                    .Where(p => p.idPartido == idPartido)
+                                    .Join(entities.Equipo_Jugador,
+                                    p => p.idEquipo,
+                                    ej => ej.idEquipo,
+                                    (par, equijug) => equijug).ToList();
+
+                    var jugadores = intermedio
+                                    .Join(entities.Jugador,
+                                    i => i.idJugador,
+                                    j => j.idJugador,
+                                    (inter, jug) => jug).ToList();
+
+                    var jugadoresConf = entities.Partido_Jugador
+                                    .Where(pj => pj.idPartido == idPartido)
+                                    .Join(entities.Jugador,
+                                    pj => pj.idJugador,
+                                    j => j.idJugador,
+                                    (inter, jug) => jug).ToList();
+
+                    var jugadoresNOconfirmados = jugadores.Where(j => !jugadoresConf.
+                                                                    Select(jc => jc.idJugador)
+                                                                    .Contains(j.idJugador));
+
+
+                    if (jugadoresNOconfirmados == null || jugadoresNOconfirmados.Count() <= 0)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, jugadoresNOconfirmados);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
         [Route("{idPartido:int}/Chat")]
         public HttpResponseMessage PostChat([FromBody]MensajeEntrada mensaje , int idPartido)
         {
