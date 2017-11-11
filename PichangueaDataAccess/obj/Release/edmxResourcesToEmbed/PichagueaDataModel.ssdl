@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PichangueaUsachModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Auditoria">
+    <Key>
+      <PropertyRef Name="idAuditoria" />
+    </Key>
+    <Property Name="idAuditoria" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="audTipo" Type="varchar" MaxLength="15" />
+    <Property Name="audPagina" Type="varchar" MaxLength="35" />
+    <Property Name="audEvento" Type="varchar" MaxLength="75" />
+    <Property Name="audId" Type="varchar" MaxLength="8000" />
+    <Property Name="audTexto" Type="varchar" MaxLength="8000" />
+    <Property Name="audError" Type="varchar" MaxLength="8000" />
+    <Property Name="audIp" Type="varchar" MaxLength="20" />
+    <Property Name="audUsuario" Type="varchar" MaxLength="35" />
+    <Property Name="audCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Cancha">
+    <Key>
+      <PropertyRef Name="idCancha" />
+    </Key>
+    <Property Name="idCancha" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idTipoCancha" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idComplejoDeportivo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="canNombre" Type="varchar" MaxLength="75" />
+    <Property Name="canCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Complejo_Deportivo">
+    <Key>
+      <PropertyRef Name="idComplejoDeportivo" />
+    </Key>
+    <Property Name="idComplejoDeportivo" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cmdNombre" Type="varchar" MaxLength="128" />
+    <Property Name="cmdDireccion" Type="varchar" MaxLength="256" />
+    <Property Name="cmdFono" Type="varchar" MaxLength="75" />
+    <Property Name="cmdCelular" Type="varchar" MaxLength="75" />
+    <Property Name="cmdFax" Type="varchar" MaxLength="75" />
+    <Property Name="cmdEmail" Type="varchar" MaxLength="1024" />
+    <Property Name="cmdGeoreferencia" Type="varchar" MaxLength="1024" />
+    <Property Name="cmdUrl" Type="varchar" MaxLength="1024" />
+    <Property Name="cmdCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Deporte">
+    <Key>
+      <PropertyRef Name="idDeporte" />
+    </Key>
+    <Property Name="idDeporte" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="depNombre" Type="varchar" MaxLength="75" />
+    <Property Name="depFamilia" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="depCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Equipo">
+    <Key>
+      <PropertyRef Name="idEquipo" />
+    </Key>
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="equNombre" Type="varchar" MaxLength="128" />
+    <Property Name="equEscudo" Type="varchar" MaxLength="1024" />
+    <Property Name="equDescripcion" Type="varchar" MaxLength="2048" />
+    <Property Name="equUrl" Type="varchar" MaxLength="1024" />
+    <Property Name="equEmail" Type="varchar" MaxLength="1024" />
+    <Property Name="equContacto" Type="varchar" MaxLength="256" />
+    <Property Name="equContactoFono" Type="varchar" MaxLength="75" />
+    <Property Name="equContactoCelular" Type="varchar" MaxLength="75" />
+    <Property Name="equContactoEmail" Type="varchar" MaxLength="1024" />
+    <Property Name="equCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Equipo_Chat">
+    <Key>
+      <PropertyRef Name="idEquipoChat" />
+    </Key>
+    <Property Name="idEquipoChat" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="echMensaje" Type="varchar" MaxLength="8000" />
+    <Property Name="echaCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Equipo_Invitacion">
+    <Key>
+      <PropertyRef Name="idEquipoInvitacion" />
+    </Key>
+    <Property Name="idEquipoInvitacion" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="einEstado" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="einCreacion" Type="datetime" />
+    <Property Name="einModificacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Equipo_Jugador">
+    <Key>
+      <PropertyRef Name="idEquipoJugador" />
+    </Key>
+    <Property Name="idEquipoJugador" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="ejuRol" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="ejuEstado" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="ejuCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Equipo_Solicita_Ingreso">
+    <Key>
+      <PropertyRef Name="idEquipoSolicitaIngreso" />
+    </Key>
+    <Property Name="idEquipoSolicitaIngreso" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="esiCreacion" Type="datetime" />
+    <Property Name="esiEstado" Type="numeric" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="Jugador">
+    <Key>
+      <PropertyRef Name="idJugador" />
+    </Key>
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="jugUsername" Type="varchar" MaxLength="35" />
+    <Property Name="jugPassword" Type="varchar" MaxLength="1024" />
+    <Property Name="jugRut" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="jugRutDv" Type="varchar" MaxLength="1" />
+    <Property Name="jugNombre" Type="varchar" MaxLength="35" />
+    <Property Name="jugPaterno" Type="varchar" MaxLength="35" />
+    <Property Name="jugMaterno" Type="varchar" MaxLength="35" />
+    <Property Name="jugFono" Type="varchar" MaxLength="75" />
+    <Property Name="jugCelular" Type="varchar" MaxLength="75" />
+    <Property Name="jugEmail" Type="varchar" MaxLength="1024" />
+    <Property Name="jugFoto" Type="varchar" MaxLength="1024" />
+    <Property Name="jugCreacion" Type="datetime" />
+    <Property Name="jugApodo" Type="varchar" MaxLength="125" />
+  </EntityType>
+  <EntityType Name="Partido">
+    <Key>
+      <PropertyRef Name="idPartido" />
+    </Key>
+    <Property Name="idPartido" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idTipoPartido" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idEquipo" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="parFecha" Type="datetime" />
+    <Property Name="parHora" Type="time" Precision="7" />
+    <Property Name="parRival" Type="varchar" MaxLength="75" />
+    <Property Name="parComplejo" Type="varchar" MaxLength="128" />
+    <Property Name="parCancha" Type="varchar" MaxLength="35" />
+    <Property Name="parUbicacion" Type="varchar" MaxLength="256" />
+    <Property Name="parGeoReferencia" Type="varchar" MaxLength="256" />
+    <Property Name="parEstado" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="parCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Partido_Chat">
+    <Key>
+      <PropertyRef Name="idPartidoChat" />
+    </Key>
+    <Property Name="idPartidoChat" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idPartido" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pchMensaje" Type="varchar" MaxLength="8000" />
+    <Property Name="pchCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Partido_Incidente">
+    <Key>
+      <PropertyRef Name="idPartidoIncidente" />
+    </Key>
+    <Property Name="idPartidoIncidente" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idPartido" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pinTarjetaAmarilla" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pinTarjetaRoja" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pinGol" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pinCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Partido_Jugador">
+    <Key>
+      <PropertyRef Name="idPartidoJugador" />
+    </Key>
+    <Property Name="idPartidoJugador" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idJugador" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="idPartido" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pjuGalleta" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pjuEstado" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="pjuCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Tipo_Cancha">
+    <Key>
+      <PropertyRef Name="idTipoCancha" />
+    </Key>
+    <Property Name="idTipoCancha" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idDeporte" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="tcaNombre" Type="varchar" MaxLength="75" />
+    <Property Name="tcaCreacion" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Tipo_Partido">
+    <Key>
+      <PropertyRef Name="idTipoPartido" />
+    </Key>
+    <Property Name="idTipoPartido" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idDeporte" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="tpaNombre" Type="varchar" MaxLength="75" />
+    <Property Name="tpaMaximoJugadores" Type="numeric" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityContainer Name="PichangueaUsachModelStoreContainer">
+    <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cancha" EntityType="Self.Cancha" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Complejo_Deportivo" EntityType="Self.Complejo_Deportivo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Deporte" EntityType="Self.Deporte" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipo" EntityType="Self.Equipo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipo_Chat" EntityType="Self.Equipo_Chat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipo_Invitacion" EntityType="Self.Equipo_Invitacion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipo_Jugador" EntityType="Self.Equipo_Jugador" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Equipo_Solicita_Ingreso" EntityType="Self.Equipo_Solicita_Ingreso" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Jugador" EntityType="Self.Jugador" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Partido" EntityType="Self.Partido" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Partido_Chat" EntityType="Self.Partido_Chat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Partido_Incidente" EntityType="Self.Partido_Incidente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Partido_Jugador" EntityType="Self.Partido_Jugador" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tipo_Cancha" EntityType="Self.Tipo_Cancha" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tipo_Partido" EntityType="Self.Tipo_Partido" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
