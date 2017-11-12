@@ -153,12 +153,12 @@ ejemplo: api/Partido/219/Jugadores/NoConfirmados
 @POST: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas} ```
 
 ---------------------------------------------------------------------------------------------------
-### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### ¡RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO!
 ### PARA LAS SIGUIENTES FUNCIONES SE DEBE BUSCAR TODOS LOS PARTIDOS DEL JUGADOR 10003, YA QUE SE HAN 
 ### CREADO PARTIDOS FALSOS PARA PROBAR, USAR LA FUNCION QUE RETORNA TODOS LOS PARTIDOS DE UN JUGADOR 
 ### Y VERIFICAR EN EL RETORNO QUE PARTIDOS TIENEN ESTADO 0, 1 Y 2, DE TAL FORMA DE QUE SE HAGAN BIEN
 ### LAS PRUEBAS
-### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### ¡RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO!
 ---------------------------------------------------------------------------------------------------
 
 ### Modificar confirmacion de un jugador a un partido
@@ -192,12 +192,12 @@ ejemplo: api/Partido/219/Jugadores/NoConfirmados
 @PUT ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas} ```
 
 ---------------------------------------------------------------------------------------------------
-### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### ¡RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO!
 ### PARA LAS FUNCIONES ANTERIORES SE DEBE BUSCAR TODOS LOS PARTIDOS DEL JUGADOR 10003, YA QUE SE HAN 
 ### CREADO PARTIDOS FALSOS PARA PROBAR, USAR LA FUNCION QUE RETORNA TODOS LOS PARTIDOS DE UN JUGADOR 
 ### Y VERIFICAR EN EL RETORNO QUE PARTIDOS TIENEN ESTADO 0, 1 Y 2, DE TAL FORMA DE QUE SE HAGAN BIEN
 ### LAS PRUEBAS
-### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### ¡RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO!
 ---------------------------------------------------------------------------------------------------
 
 ### Obtener los mensajes del chat de un partido
