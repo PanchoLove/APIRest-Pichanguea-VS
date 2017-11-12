@@ -332,46 +332,103 @@ namespace APIRestPichangueaVS.Controllers
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    var partidos = 
-                        entities.Equipo_Jugador
-                        .Where(ej => ej.idJugador == idJugador) //se filtran con Where los elementos de Equipo_Jugador con la id del jugador buscado
-                        .Join(entities.Partido
-                        .Where(p => p.parFecha.Value >= DateTime.Now), //el resultado del Where se cruza con la tabla de Partido 
-                                ej => ej.idEquipo, //se toma como elemento de comparacion el idEquipo de la tabla Equipo_Jugador
-                                p => p.idEquipo, //se toma como segundo elemento de comparacion el idEquipo de la tabla Partido
-                                (EquiJug, partidoT)//el join devuelve los elementos de Equipo_Jugador y partido coincidentes
-                                => new
-                                {
-                                    partido = new
-                                    {
-                                        idPartido = partidoT.idPartido,
-                                        equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == partidoT.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
-                                        tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == partidoT.idTipoPartido), //se aplica lo mismo para el tipo_partido
-                                        parCancha = partidoT.parCancha,
-                                        parComplejo = partidoT.parComplejo,
-                                        parCreacion = partidoT.parCreacion,
-                                        parEstado = partidoT.parEstado,
-                                        parFecha = new
-                                        {
-                                            Año = partidoT.parFecha.Value.Year,
-                                            Mes = partidoT.parFecha.Value.Month,
-                                            Dia = partidoT.parFecha.Value.Day
-                                        },
-                                        parGeoReferencia = partidoT.parGeoReferencia,
-                                        parHora = new
-                                        {
-                                            Hora = partidoT.parHora.Value.Hours,
-                                            Minutos = partidoT.parHora.Value.Minutes
-                                        },
-                                        parRival = partidoT.parRival,
-                                        parUbicacion = partidoT.parUbicacion
-                                    }
-                                }
-                                ).ToList();
+                    var partidos = entities.Equipo_Jugador
+                                                    .Where(ej => ej.idJugador == idJugador) //se filtran con Where los elementos de Equipo_Jugador con la id del jugador buscado
+                                                    .Join(entities.Partido
+                                                    .Where(p => p.parFecha.Value >= DateTime.Now), //el resultado del Where se cruza con la tabla de Partido 
+                                                          ej => ej.idEquipo, //se toma como elemento de comparacion el idEquipo de la tabla Equipo_Jugador
+                                                          p => p.idEquipo, //se toma como segundo elemento de comparacion el idEquipo de la tabla Partido
+                                                          (EquiJug, partidoT)//el join devuelve los elementos de Equipo_Jugador y partido coincidentes
+                                                          => partidoT).ToList();
 
-                    if (partidos != null && partidos.Count() > 0)
+                    var partidosConfirmados = entities.Partido_Jugador
+                                                     .Where(pj => pj.idJugador == idJugador)
+                                                     .ToList();
+
+                    var partidosNOconfirmados = partidos.Where(p => !partidosConfirmados.
+                                                                    Select(pj => pj.idPartido)
+                                                                    .Contains(p.idPartido));
+
+                    decimal? asis = 2;
+                    decimal? galle = 0;
+                    var PNC =
+                        partidosNOconfirmados
+                        .Join(partidosNOconfirmados,
+                        pnc1 => pnc1.idPartido,
+                        pnc2 => pnc2.idPartido,
+                        (p1, p2) => new
+                        {
+                            partido = new
+                            {
+                                idPartido = p2.idPartido,
+                                equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == p2.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
+                                tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == p2.idTipoPartido), //se aplica lo mismo para el tipo_partido
+                                parCancha = p2.parCancha,
+                                parComplejo = p2.parComplejo,
+                                parCreacion = p2.parCreacion,
+                                parEstado = p2.parEstado,
+                                parFecha = new
+                                {
+                                    Año = p2.parFecha.Value.Year,
+                                    Mes = p2.parFecha.Value.Month,
+                                    Dia = p2.parFecha.Value.Day
+                                },
+                                parGeoReferencia = p2.parGeoReferencia,
+                                parHora = new
+                                {
+                                    Hora = p2.parHora.Value.Hours,
+                                    Minutos = p2.parHora.Value.Minutes
+                                },
+                                parRival = p2.parRival,
+                                parUbicacion = p2.parUbicacion
+                            },
+                            asistencia = asis,
+                            galletas = galle
+                        }).ToList();
+
+
+                    var PC = 
+                        entities.Partido_Jugador
+                        .Where(pj => pj.idJugador == idJugador)
+                            .Join(entities.Partido.Where(p => p.parFecha.Value >= DateTime.Now),
+                            pj => pj.idPartido,
+                            p => p.idPartido,
+                            (ParJug,Par) => new
+                            {
+                                partido = new
+                                {
+                                    idPartido = Par.idPartido,
+                                    equipo = entities.Equipo.FirstOrDefault(e => e.idEquipo == Par.idEquipo), //para el equipo se aprovecha la idEquipo del partido y se agrega inmediatamente el equipo
+                                    tipoPartido = entities.Tipo_Partido.FirstOrDefault(tp => tp.idTipoPartido == Par.idTipoPartido), //se aplica lo mismo para el tipo_partido
+                                    parCancha = Par.parCancha,
+                                    parComplejo = Par.parComplejo,
+                                    parCreacion = Par.parCreacion,
+                                    parEstado = Par.parEstado,
+                                    parFecha = new
+                                    {
+                                        Año = Par.parFecha.Value.Year,
+                                        Mes = Par.parFecha.Value.Month,
+                                        Dia = Par.parFecha.Value.Day
+                                    },
+                                    parGeoReferencia = Par.parGeoReferencia,
+                                    parHora = new
+                                    {
+                                        Hora = Par.parHora.Value.Hours,
+                                        Minutos = Par.parHora.Value.Minutes
+                                    },
+                                    parRival = Par.parRival,
+                                    parUbicacion = Par.parUbicacion
+                                },
+                                asistencia = ParJug.pjuEstado,
+                                galletas = ParJug.pjuGalleta
+                            })
+                        .ToList();
+
+                    var par = PNC.Union(PC);
+
+                    if (par != null && par.Count() > 0)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, partidos);
+                        return Request.CreateResponse(HttpStatusCode.OK, par);
                     }
                     else
                     {
@@ -532,244 +589,46 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
-        
 
-
-
-        //funcion para modificar la asistencia de un jugador a un partido
-        /****  MODIFICAR O QUITAR (funciona bajo la idea antigua y solamente modifica el estado)****/
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/{estado:int}")]
-        public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado)
+        //Funcion que modifica la confirmacion de un jugador al partido
+        [Route("{idJugador:int}/Partidos/{idPartido}/Confirmar/{confirmacion}")]
+        public HttpResponseMessage PutConfirmacion(int idJugador, int idPartido, int confirmacion)
         {
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //obtener los asistentes a un partido
-                    var asistencias = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido);
-
-                    //verificar si el jugador esta vinculado al partido
-                    var vinculo = asistencias.FirstOrDefault(pj=>pj.idJugador==idJugador);
-                    if (vinculo == null)
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.
+                                        Partido_Jugador.
+                                        FirstOrDefault 
+                                        (pj => pj.idJugador == idJugador &&
+                                        pj.idPartido == idPartido);
+                    if (entity == null)
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.OK, "El jugador no se encuentra vinculado al partido");
-                    }
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al buscar el partido o el jugador");
 
-                    //caso 1: confirmar asistencia
-                    if (estado == estadoConfirmado)
-                    {
-                        //obtener la cantidad de asistentes y cupos disponibles
-                        var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
-                        Nullable<decimal> cuposOcupados = asistentes.Count(); //contar cupos ocupados (puede seguir siendo valida)
-
-                        //sumar las galletas de cada jugador al contador de cupos ocupados
-                        foreach (Partido_Jugador pj in asistentes)
-                        {
-                            if (pj.pjuGalleta > 0)
-                            {
-                                cuposOcupados = cuposOcupados + pj.pjuGalleta;  
-                            }
-                        }
-
-                        //obtener el tipoPartido del partido para determinar la cantidad de participantes maximos
-                        var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
-                                                           .Join(entities.Tipo_Partido,
-                                                                p => p.idTipoPartido,
-                                                                tp => tp.idTipoPartido,
-                                                                (par, tipoPar) => tipoPar).ToList()[0];
-
-                        if (tipoPartido == null)
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
-                        }
-
-                        
-                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //establecer cupos maximos
-                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinar cupos disponibles
-
-                        //modificar el estado si es que quedan cupos disponibles (idea antigua)
-                        if (cuposDisponibles > 0)
-                        {
-                            vinculo.pjuEstado = estado;
-                            entities.SaveChanges();
-
-                            return Request.CreateResponse(HttpStatusCode.OK, "Asistencia confirmada");
-                        }
-                        else
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "No hay suficientes cupos disponibles");
-                        }
-                    }
-                    //caso 2: asistencia cancelada
-                    if(estado==estadoCancelado) {
-                        if (vinculo.pjuEstado==estado) {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "La asistencia del jugador ya se encontraba cancelada o nunca fue creada");
-                        }
-                        else{
-                            return Request.CreateResponse(HttpStatusCode.OK, "Asistencia cancelada");
-                        }
-                    }
-                    //caso 3: se ingresa in valor de estado de asistencia incorrecto (ni 0 ni 1)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "El estado ingresado no es valido");
-                }
-            }
-            catch (Exception ex)
-            {
-                //En caso de existir otro error, se envia estado de error y un mensaje
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }
-        }
-
-
-        //funcion para modificar la cantidad de galletas de un jugador (modifica el valor de "galleta")
-        /*se inlcluyen 2 direcciones para que se pueda llamar como 
-         * Galletas/{cantidad} o Galletas?cantidad={cantidad}
-        */
-
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/")]
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/{cantidad:int}")]
-        public HttpResponseMessage PutGalletas(int idJugador, int idPartido, int cantidad)
-        {
-
-            try
-            {
-                //Se obtienen los modelos de la BD
-                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
-                {
-                    //obtener los asistentes a un partido
-                    var asistencias = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido);
-
-                    //verificar si el jugador esta vinculado al partido
-                    var vinculo = asistencias.FirstOrDefault(pj => pj.idJugador == idJugador && pj.pjuEstado == estadoConfirmado);
-                    if (vinculo == null)
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.OK, "El jugador no ha confirma asistencia o no se encuentra vinculado a este");
-                    }
-
-                        //obtener la cantidad de asistentes y cupos disponibles
-                        var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
-                        Nullable<decimal> cuposOcupados = asistentes.Count();
-
-                    //sumar las galletas de cada jugador al contador de cupos ocupados
-                    foreach (Partido_Jugador pj in asistentes)
-                        {
-                            if (pj.pjuGalleta > 0)
-                            {
-                                cuposOcupados = cuposOcupados + pj.pjuGalleta;
-                            }
-                        }
-
-                    //obtener el tipoPartido del partido para determinar la cantidad de participantes maximos
-                    var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
-                                                           .Join(entities.Tipo_Partido,
-                                                                p => p.idTipoPartido,
-                                                                tp => tp.idTipoPartido,
-                                                                (par, tipoPar) => tipoPar).ToList()[0];
-
-                        if (tipoPartido == null)
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
-                        }
-
-
-
-                    Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //establecer cupos maximos
-                    Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinar cupos disponibles
-
-                    //modificar el estado si es que quedan cupos disponibles tanto para el jugador como las galletas 
-                   // (idea antigua no se debe modificar el estado si no crear un nuevo patido_jugador)
-                    if (cuposDisponibles > cantidad)
-                        {
-                            vinculo.pjuGalleta = cantidad;
-                            entities.SaveChanges();
-
-                            return Request.CreateResponse(HttpStatusCode.OK, cantidad.ToString() + " galletas");
-                        }
-                        else
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "No hay suficientes cupos disponibles");
-                        }
-                    }
-
-                
-            }
-            
-            catch (Exception ex)
-            {
-                //En caso de existir otro error, se envia estado de error y un mensaje
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }
-        }
-
-
-        //funcion para agregar mas galletas al valor "galleta" ya existente
-        //hace galleta = galleta + cantidad
-        //MODIFICAR O QUITAR 
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/")]
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/Galletas/{cantidad:int}")]
-        public HttpResponseMessage PostGalletas(int idJugador, int idPartido, int cantidad)
-        {
-
-            try
-            {
-                //Se obtienen los modelos de la BD
-                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
-                {
-
-                    //obtener los asistentes a un partido
-                    var asistencias = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido);
-
-                    //verificar si el jugador esta vinculado al partido
-                    var vinculo = asistencias.FirstOrDefault(pj => pj.idJugador == idJugador && pj.pjuEstado == estadoConfirmado);
-                    if (vinculo == null)
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.OK, "El jugador no ha confirma asistencia o no se encuentra vinculado a este");
-                    }
-
-                    //obtener la cantidad de asistentes y cupos disponibles
-                    var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
-                    Nullable<decimal> cuposOcupados = asistentes.Count();
-
-                    //sumar al contador de cupos ocupados las galletas de los asistentes
-                    foreach (Partido_Jugador pj in asistentes)
-                    {
-                        if (pj.pjuGalleta > 0)
-                        {
-                            cuposOcupados = cuposOcupados + pj.pjuGalleta;
-                        }
-                    }
-                    //obtener el tipoPartido del partido para obtener la cantidad maxima de cupos
-                    var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
-                                                       .Join(entities.Tipo_Partido,
-                                                            p => p.idTipoPartido,
-                                                            tp => tp.idTipoPartido,
-                                                            (par, tipoPar) => tipoPar).ToList()[0];
-
-                    if (tipoPartido == null)
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
-                    }
-                    
-                    Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //determinando cupos maximos
-                    Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinando cupos disponibles
-
-                    //si alcanzan cupos para las nuevas galletas agregarlas
-                    if (cuposDisponibles > cantidad)
-                    {
-                        vinculo.pjuGalleta = vinculo.pjuGalleta + cantidad;
-                        entities.SaveChanges();
-
-                        return Request.CreateResponse(HttpStatusCode.OK, cantidad.ToString() + " galletas");
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "No hay suficientes cupos disponibles");
-                    }
+                        //Se modifican los campos del tipo de cancha
+                        entity.pjuCreacion = DateTime.Now;
+                        entity.pjuEstado = confirmacion;
+                        if(confirmacion == 0)
+                        {
+                            entity.pjuGalleta = 0;
+                        }
 
+
+                        //Se guardan los cambios
+                        entities.SaveChanges();
+                        //Se retorna el estado OK y la entidad Partido_Jugador
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
                 }
             }
-
             catch (Exception ex)
             {
                 //En caso de existir otro error, se envia estado de error y un mensaje
@@ -777,88 +636,43 @@ namespace APIRestPichangueaVS.Controllers
             }
         }
 
-
-        //Funcion que confirma asistencia y agrega galletas al mismo tiempo
-        /***MODIFICAR (el acto de confirmar asistencia ya no deberia cambiar el estado si no crear
-         * un vinculo del tipo Partido_Jugador
-         * )**/
-        [Route("{idJugador:int}/Partidos/{idPartido:int}/Asistencia/")]
-        public HttpResponseMessage PutAsistencia(int idJugador, int idPartido, int estado, int galletas)
+        //Funcion que modifica las galletas de un jugador al partido
+        [Route("{idJugador:int}/Partidos/{idPartido}/Galletas/{galletas}")]
+        public HttpResponseMessage PutGalletas(int idJugador, int idPartido, int galletas)
         {
-
             try
             {
                 //Se obtienen los modelos de la BD
                 using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
                 {
-                    //obtener los asistentes a un partido
-                    var asistencias = entities.Partido_Jugador.Where(pj => pj.idPartido == idPartido);
-
-                    //verificar si el jugador esta vinculado al partido
-                    var vinculo = asistencias.FirstOrDefault(pj => pj.idJugador == idJugador);
-                    if (vinculo == null)
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.
+                                        Partido_Jugador.
+                                        FirstOrDefault
+                                        (pj => pj.idJugador == idJugador &&
+                                        pj.idPartido == idPartido);
+                    if (entity == null)
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.OK, "El jugador no se encuentra vinculado al partido");
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al buscar el partido o el jugador");
+
                     }
-
-                    //caso 1: confirmar asistencia
-                    if (vinculo.pjuEstado == estadoConfirmado)
+                    else
                     {
-                        //obtener la cantidad de asistentes y cupos disponibles
-                        var asistentes = asistencias.Where(pj => pj.pjuEstado == 1).ToList();
-                        Nullable<decimal> cuposOcupados = asistentes.Count();
-
-                        //sumar al contador de cupos ocupados las galletas de los asistentes
-                        foreach (Partido_Jugador pj in asistentes)
+                        if(entity.pjuEstado == 0)
                         {
-                            if (pj.pjuGalleta > 0)
-                            {
-                                cuposOcupados = cuposOcupados + pj.pjuGalleta;
-                            }
+                            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "El jugador debe confirmar su asistencia antes de agregar galletas");
                         }
-
-                        //obtener el tipoPartido del partido para obtener la cantidad maxima de cupos
-                        var tipoPartido = entities.Partido.Where(p => p.idPartido == vinculo.idPartido)
-                                                           .Join(entities.Tipo_Partido,
-                                                                p => p.idTipoPartido,
-                                                                tp => tp.idTipoPartido,
-                                                                (par, tipoPar) => tipoPar).ToList()[0];
-
-                        if (tipoPartido == null)
+                        else
                         {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No se encuentra toda la información necesaria del eequipo en la base de datos (tipo_partido)");
-                        }
-                        Nullable<decimal> cuposMaximos = tipoPartido.tpaMaximoJugadores; //determinando cupos maximos
-                        Nullable<decimal> cuposDisponibles = cuposMaximos - cuposOcupados; //determinando cupos disponibles
-
-                        //si alcanzan cupos para el jugador + sus galletas confirmar asistencia
-                        if (cuposDisponibles > galletas+1)
-                        {
-                            vinculo.pjuEstado = estado;
-                            vinculo.pjuGalleta = galletas;
+                            //Se modifican las galletas
+                            entity.pjuGalleta = galletas;
+                            //Se guardan los cambios
                             entities.SaveChanges();
-
-                            return Request.CreateResponse(HttpStatusCode.OK, "Asistencia confirmada");
-                        }
-                        else
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "No hay suficientes cupos disponibles");
+                            //Se retorna el estado OK y la entidad Partido_Jugador
+                            return Request.CreateResponse(HttpStatusCode.OK, entity);
                         }
                     }
-                    //caso 2: asistencia cancelada
-                    if (estado == estadoCancelado)
-                    {
-                        if (vinculo.pjuEstado == estado)
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "La asistencia del jugador ya se encontraba cancelada o nunca fue creada");
-                        }
-                        else
-                        {
-                            return Request.CreateResponse(HttpStatusCode.OK, "Asistencia cancelada");
-                        }
-                    }
-                    //caso 3: se ingresa in valor de estado de asistencia incorrecto (ni 0 ni 1)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "La asistencia del jugador ya se encontraba cancelada o nunca fue creada");
                 }
             }
             catch (Exception ex)
@@ -867,6 +681,102 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+        //Funcion que modifica las galletas de un jugador al partido
+        [Route("{idJugador:int}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas}")]
+        public HttpResponseMessage PutConfirmacionGalletas(int idJugador, int idPartido, int confirmar, int galletas)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    //Se crea una variable con el deporte correspondiente a la ID
+                    var entity = entities.
+                                        Partido_Jugador.
+                                        FirstOrDefault
+                                        (pj => pj.idJugador == idJugador &&
+                                        pj.idPartido == idPartido);
+                    if (entity == null)
+                    {
+                        //Se retorna el estado NotFound y un string que indica el error
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al buscar el partido o el jugador");
+
+                    }
+                    else
+                    {
+
+                        //Se modifica la confirmacion
+                        entity.pjuEstado = confirmar;
+                        entity.pjuCreacion = DateTime.Now;
+                        if(confirmar == 0)
+                        {
+                            entity.pjuGalleta = 0;
+                            //Se guardan los cambios
+                            entities.SaveChanges();
+                            //Se retorna el estado OK y la entidad Partido_Jugador
+                            return Request.CreateResponse(HttpStatusCode.OK, entity);
+                        }
+                        else
+                        {
+                            entity.pjuGalleta = galletas;
+                            //Se guardan los cambios
+                            entities.SaveChanges();
+                            //Se retorna el estado OK y la entidad Partido_Jugador
+                            return Request.CreateResponse(HttpStatusCode.OK, entity);
+                        }
+                        
+                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        //Funcion que modifica las galletas de un jugador al partido
+        [Route("{idJugador:int}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas}")]
+        public HttpResponseMessage PostConfirmacionGalletas(int idJugador, int idPartido, int confirmar, int galletas)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+                    Partido_Jugador pj = new Partido_Jugador();
+                    pj.idJugador = idJugador;
+                    pj.idPartido = idPartido;
+                    pj.pjuCreacion = DateTime.Now;
+                    pj.pjuEstado = confirmar;
+                    if(confirmar == 0)
+                    {
+                        pj.pjuGalleta = 0;
+                    }
+                    else
+                    {
+                        pj.pjuGalleta = galletas;
+                    }
+                    //Se agrega el pj a las entidades
+                    entities.Partido_Jugador.Add(pj);
+                    entities.SaveChanges();
+                    //Se crea un un mensaje con el codigo Created y con el Partido_Jugador ingresado
+                    var message = Request.CreateResponse(HttpStatusCode.Created, pj);
+                    //Se concatena la ID al deporte del mensaje
+                    message.Headers.Location = new Uri(Request.RequestUri + pj.idPartidoJugador.ToString());
+                    return message;
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+
 
         //funcion para obtener los mensaje del chat de un partido
         [Route("{idJugador:int}/Partidos/{idPartido:int}/Chat/")]

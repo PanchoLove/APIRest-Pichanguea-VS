@@ -19,10 +19,10 @@ resumen:
     -obtener los partidos confirmados del jugador desde la fecha actual
     -obtener los partidos NO confirmados del jugador desde la fecha actual
     -obtener los equipos de un jugador
-    -modificar asistencia de un jugador
-    -modificar asistencia de un jugador incluyendo galletas
-    -agregar galletas
-    -modificar cantidad de galletas
+    -crear confirmacion y galletas a un partido de un jugador
+    -modificar confirmacion de un jugador a un partido
+    -modificar galletas de un jugador a un partido
+    -modificar confirmacion y galletas de un jugador a un partido
     -obtener los mensajes del chat de un partido
     -enviar un mensaje a un chat de partido
     -obtener los mensajes del chat de un equipo
@@ -112,6 +112,8 @@ ejemplo: api/Jugador/10003/Partidos/NoConfirmados
 ### OJO, PARA LOS ULTIMOS 3 MÉTODOS SOLO HACE ALGO CON LA ID "10003", YA QUE CON ELLA SE CREARON PARTIDOS FICTICIOSOS, PARA LOS OTROS JUGADORES NO EXISTEN PARTIDOS FUTUROS.
 ###---------------------------------------------
 
+
+
 ### Obtener todos los todos los jugadores de un partido 
 
 retorna todos los jugadores de un partido, esten confirmados o no confirmados
@@ -141,27 +143,62 @@ ejemplo: api/Partido/219/Jugadores/NoConfirmados
 
 @GET: ``` api/Jugador/{idJugador}/Equipos ```
 
-### Modificar asistencia de un jugador
+### Crear confirmacion y galletas de un jugador a un partido
+###------------------------------------------------------------------------------------------------
+### OJO 1, este servicio debe ser llamado cuando el estado del partido sea 2, ya que eso indica que no 
+### existe en la tabla "Partido_Jugador"
+### OJO 2, deben ir todos los parametros, en caso de confirmar con estado 0 (osea que rechaza el partido)
+### se debe indicar cualquier numero de galletas, ya que por defecto sera 0
 
-@PUT: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia/{estado} ```
+@POST: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas} ```
+
+---------------------------------------------------------------------------------------------------
+### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### PARA LAS SIGUIENTES FUNCIONES SE DEBE BUSCAR TODOS LOS PARTIDOS DEL JUGADOR 10003, YA QUE SE HAN 
+### CREADO PARTIDOS FALSOS PARA PROBAR, USAR LA FUNCION QUE RETORNA TODOS LOS PARTIDOS DE UN JUGADOR 
+### Y VERIFICAR EN EL RETORNO QUE PARTIDOS TIENEN ESTADO 0, 1 Y 2, DE TAL FORMA DE QUE SE HAGAN BIEN
+### LAS PRUEBAS
+### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+---------------------------------------------------------------------------------------------------
+
+### Modificar confirmacion de un jugador a un partido
+###------------------------------------------------------------------------------------------------
+### OJO 1, este servicio debe ser llamado cuando el estado del partido sea 1 o 0, ya que eso indica que
+### existe una confirmación previa en la tabla "Partido_Jugador"
+### OJO 2, esta función sirve para cambiar a rechazado o aceptar un partido, en caso de rechazar
+### automaticamente se borran las galletas que tenia el jugador
+
+@PUT: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Confirmar/{confirmacion} ```
 
 
+### Modificar galletas de un jugador a un partido
+###------------------------------------------------------------------------------------------------
+### OJO 1, este servicio debe ser llamado cuando el estado del partido sea 1 o 0, ya que eso indica que
+### existe una confirmación previa en la tabla "Partido_Jugador"
+### OJO 2, esta función sirve para cambiar a el numero de galletas con las que ira un jugador,
+### en  caso de agregar galletas pero la confirmacion del partido es 0, no se agregaran las galletas 
 
-### Modificar asistencia de un jugador incluyendo galletas
+@PUT: ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Galletas/{galletas} ```
 
-similar al metodo anterior pero ademas se puede indicar una cantidad de galletas agregar a la asistencia
+### Modificar confirmacion y galletas de un jugador a un partido
+###------------------------------------------------------------------------------------------------
+### OJO 1, este servicio debe ser llamado cuando el estado del partido sea 1 o 0, ya que eso indica que
+### existe una confirmación previa en la tabla "Partido_Jugador"
+### OJO 2, esta función sirve para cambiar la confirmacion y el numero de galletas con las que ira un jugador,
+### en  caso de agregar galletas pero la confirmacion del partido es 0, no se agregaran las galletas
+### OJO 3, deben ir todos los parametros, en caso de confirmar con estado 0 (osea que rechaza el partido)
+### se debe indicar cualquier numero de galletas, ya que por defecto sera 0 
 
-@PUT ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia?estado={estado}&galletas={galletas} ```
+@PUT ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Confirmar/{confirmar}/Galletas/{galletas} ```
 
-(si el estado es de cancelado se ignora la cantidad de galletas y no se utiliza)
-
-### Agregar galletas
-
-@POST ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia/Galletas/{cantidad} ```
-
-### Modificar cantidad de galletas
-
-@PUT ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Asistencia/Galletas/{cantidad} ```
+---------------------------------------------------------------------------------------------------
+### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+### PARA LAS FUNCIONES ANTERIORES SE DEBE BUSCAR TODOS LOS PARTIDOS DEL JUGADOR 10003, YA QUE SE HAN 
+### CREADO PARTIDOS FALSOS PARA PROBAR, USAR LA FUNCION QUE RETORNA TODOS LOS PARTIDOS DE UN JUGADOR 
+### Y VERIFICAR EN EL RETORNO QUE PARTIDOS TIENEN ESTADO 0, 1 Y 2, DE TAL FORMA DE QUE SE HAGAN BIEN
+### LAS PRUEBAS
+### RECORDATORIO - RECORDATORIO - RECORDATORIO - RECORDATORIO
+---------------------------------------------------------------------------------------------------
 
 ### Obtener los mensajes del chat de un partido
 Existen 2 maneras, una es desde la URL de api/jugador/{idJugador}/Partidos/{idPartido}/Chat y la otra desde la URL de "api/Partido/{idPartido}/Chat" :
