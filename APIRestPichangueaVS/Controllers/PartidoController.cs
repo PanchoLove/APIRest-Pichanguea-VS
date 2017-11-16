@@ -278,52 +278,6 @@ namespace APIRestPichangueaVS.Controllers
 
         }
 
-        [Route("{idPartido:int}/Chat")]
-        public HttpResponseMessage GetChat(int idPartido)
-        {
-            try
-            {
-                //Se obtienen los modelos de la BD
-                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
-                {
-    
-                    //se obtienen todos los registros de chat para el idPartido
-                    var chat = entities.Partido_Chat.Where(pch => pch.idPartido == idPartido)
-                                                      .Join(entities.Jugador,
-                                                            pch => pch.idJugador,
-                                                            j => j.idJugador,
-                                                            (mensaje, jugador) => new
-                                                            {
-                                                                autor = new
-                                                                {
-                                                                    idJugador = jugador.idJugador,
-                                                                    jugUsername = jugador.jugUsername,
-                                                                    jugFoto = jugador.jugFoto,
-                                                                    jugApodo = jugador.jugApodo
-                                                                },
-
-                                                                contenidoMensaje = mensaje.pchMensaje,
-                                                                creacion = mensaje.pchCreacion
-                                                            }
-                                                            ).ToList();
-
-                    if (chat != null && chat.Count()>0)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, chat);
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //En caso de existir otro error, se envia estado de error y un mensaje
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }
-
-        }
 
         //funcion para obtener los jugadores que pueden asistir a un partido
         [Route("{idPartido:int}/Jugadores")]
@@ -350,7 +304,7 @@ namespace APIRestPichangueaVS.Controllers
                                     j => j.idJugador,
                                     (inter, jug) => jug).ToList();
 
-                    if (jugadores == null || jugadores.Count() <= 0)
+                    if (jugadores == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
                     }
@@ -411,7 +365,7 @@ namespace APIRestPichangueaVS.Controllers
                                     }
                                                 ).ToList();
 
-                    if (jugadores == null || jugadores.Count() <= 0)
+                    if (jugadores == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
                     }
@@ -467,7 +421,7 @@ namespace APIRestPichangueaVS.Controllers
                                                                     .Contains(j.idJugador));
 
 
-                    if (jugadoresNOconfirmados == null || jugadoresNOconfirmados.Count() <= 0)
+                    if (jugadoresNOconfirmados == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ocurrio un error o el partido con ID: " + idPartido + " no existe tiene jugadores asociados");
                     }
@@ -483,6 +437,53 @@ namespace APIRestPichangueaVS.Controllers
                 //En caso de existir otro error, se envia estado de error y un mensaje
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
+        }
+
+
+        [Route("{idPartido:int}/Chat")]
+        public HttpResponseMessage GetChat(int idPartido)
+        {
+            try
+            {
+                //Se obtienen los modelos de la BD
+                using (PichangueaUsachEntities entities = new PichangueaUsachEntities())
+                {
+
+                    //se obtienen todos los registros de chat para el idPartido
+                    var chat = entities.Partido_Chat.Where(pch => pch.idPartido == idPartido)
+                                                      .Join(entities.Jugador,
+                                                            pch => pch.idJugador,
+                                                            j => j.idJugador,
+                                                            (mensaje, jugador) => new
+                                                            {
+                                                                autor = new
+                                                                {
+                                                                    idJugador = jugador.idJugador,
+                                                                    jugUsername = jugador.jugUsername,
+                                                                    jugApodo = jugador.jugApodo
+                                                                },
+
+                                                                contenidoMensaje = mensaje.pchMensaje,
+                                                                creacion = mensaje.pchCreacion
+                                                            }
+                                                            ).ToList();
+
+                    if (chat != null)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, chat.OrderBy(c => c.creacion));
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Ha ocurrido un error al intentar obtener los mensajes asociados al partido");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //En caso de existir otro error, se envia estado de error y un mensaje
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         [Route("{idPartido:int}/Chat")]

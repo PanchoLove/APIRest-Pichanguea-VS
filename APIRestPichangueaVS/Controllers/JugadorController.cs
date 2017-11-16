@@ -383,7 +383,8 @@ namespace APIRestPichangueaVS.Controllers
                                 parUbicacion = p2.parUbicacion
                             },
                             asistencia = asis,
-                            galletas = galle
+                            galletas = galle,
+                            fecha = p2.parFecha
                         }).ToList();
 
 
@@ -420,15 +421,16 @@ namespace APIRestPichangueaVS.Controllers
                                     parUbicacion = Par.parUbicacion
                                 },
                                 asistencia = ParJug.pjuEstado,
-                                galletas = ParJug.pjuGalleta
+                                galletas = ParJug.pjuGalleta,
+                                fecha = Par.parFecha
                             })
                         .ToList();
 
                     var par = PNC.Union(PC);
 
-                    if (par != null && par.Count() > 0)
+                    if (par != null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, par);
+                        return Request.CreateResponse(HttpStatusCode.OK, par.OrderBy(p => p.fecha));
                     }
                     else
                     {
@@ -504,7 +506,7 @@ namespace APIRestPichangueaVS.Controllers
                             }
                         }).ToList();
 
-                    if (PNC != null && PNC.Count() > 0)
+                    if (PNC != null)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, PNC);
                     }
@@ -573,7 +575,7 @@ namespace APIRestPichangueaVS.Controllers
 
                    
 
-                    if (partidosConfirmados != null && partidosConfirmados.Count() > 0)
+                    if (partidosConfirmados != null)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, partidosConfirmados);
                     }
@@ -775,6 +777,8 @@ namespace APIRestPichangueaVS.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+
 
 
 

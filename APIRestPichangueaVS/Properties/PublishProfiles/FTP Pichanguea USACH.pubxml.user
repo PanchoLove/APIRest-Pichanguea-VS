@@ -80,7 +80,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/01/2017 19:25:59</publishTime>
     </File>
     <File Include="bin/APIRestPichangueaVS.dll">
-      <publishTime>11/12/2017 15:25:22</publishTime>
+      <publishTime>11/16/2017 13:48:11</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>11/01/2017 19:25:58</publishTime>
@@ -232,6 +232,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="bin/PichangueaDataAccess.dll">
       <publishTime>11/08/2017 19:34:40</publishTime>
     </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>01/11/2017 19:26:01</publishTime>
+    </File>
     <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
       <publishTime>11/01/2017 19:26:01</publishTime>
     </File>
@@ -258,6 +261,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     </File>
     <File Include="bin/roslyn/vbc.exe">
       <publishTime>11/01/2017 19:26:01</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>01/11/2017 19:26:01</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>11/01/2017 19:26:01</publishTime>

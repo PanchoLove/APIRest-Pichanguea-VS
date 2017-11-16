@@ -210,19 +210,18 @@ Existen 2 maneras, una es desde la URL de api/jugador/{idJugador}/Partidos/{idPa
 ### Enviar un mensaje a un chat de partido
 Analoga a la funcion anterior, la diferencia esta en que para cada caso cambia el body del post
 
-@GET ``` api/Partido/{idPartido}/Chat ```
+@POST ``` api/Partido/{idPartido}/Chat ```
 
 Body: 
 ``` 
 	{
-	  "idPartido": 1.0,
 	  "idJugador": 1.0,
 	  "contenidoMensaje": "sample string 1"
 	} 
 ```
 
 
-@GET ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Chat ```
+@POST ``` api/Jugador/{idJugador}/Partidos/{idPartido}/Chat ```
 
 Body: 
 ``` 
